@@ -4,7 +4,7 @@ function App () {
   return (
     <>
       <div>
-        <h1>PartySync - App</h1>
+        <h1>Lecturize It - App</h1>
       </div>
     </>
   );
