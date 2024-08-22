@@ -1,17 +1,16 @@
 import { useAuth } from "../context/AuthContext";
-import Button from "../ui/Button/Button.ui";
+import Navbar from "../components/Navbar/Navbar.component";
 
 function App () {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   return (
-    <>
-      <div>
-        <h1>Lecturize It - App</h1>
-        <h3>bem vindo - {user?.username}</h3>
-        <Button onClick={logout} text="Sair"/>
-      </div>
-    </>
+    <div className="w-screen h-screen bg-[#e2e2e2]">
+      <Navbar />
+      {user && (
+        <h3>Bem-vindo - {user.username}</h3>
+      )}
+    </div>
   );
 }
 
