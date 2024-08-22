@@ -3,15 +3,15 @@ import InputLogin from "../../ui/InputLogin/InputLogin.ui";
 import Button from "../../ui/Button/Button.ui";
 import { Icon } from "../../ui/Icon/Icon.ui";
 import { ErrorNotification } from "../../ui/ErrorNotification/ErrorNotification.ui";
+import { SuccessNotification } from "../../ui/SucessNotification/SucessNotification.ui"; 
 
-function LoginPage () {
-  const [inputEmail, setInputEmail] = useState("");
+function LoginPage () { const [inputEmail, setInputEmail] = useState("");
   const [inputPassword, setInputPassword] = useState("");
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  const [showPassword, setShowPassword] = useState(false);
+  const [isShowPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null); 
 
-  // array ficticio de users
+  // array fictício de usuários
   const users = [
     {
       email: "user@example.com",
@@ -45,21 +45,23 @@ function LoginPage () {
 
     if (!user) {
       setError("E-mail ou senha incorretos.");
+      setSuccessMessage(null); // 
     } else {
       setError(null);
-      // logica para quando o login for sucesso
+      setSuccessMessage("Login realizado com sucesso!"); 
       console.log("Login bem-sucedido!");
     }
   };
 
   return (
-    <div className="w-screen h-screen bg-[#8B80F9] flex items-center justify-center">
-      <div className="bg-white rounded-lg w-[90%] max-w-[400px] md:max-w-[500px] lg:max-w-[600px] h-auto py-8 px-4 md:px-8 shadow-2xl flex flex-col items-center">
+    <div className="w-screen h-screen bg-[#e2e2e2] flex items-center justify-center">
+      <div className="bg-gradient-to-b from-white/90 to-white/40 rounded-lg w-[90%] max-w-[400px] md:max-w-[500px] lg:max-w-[600px] h-auto py-8 px-4 md:px-8 shadow-2xl flex flex-col items-center">
         <h1 className="text-shadow text-2xl md:text-3xl lg:text-4xl font-bold text-black whitespace-nowrap text-center mb-6">
           Lecturize It
         </h1>
 
         {error && <ErrorNotification error={error} />} 
+        {successMessage && <SuccessNotification message={successMessage} />} 
 
         <form className="flex flex-col w-full space-y-4" onSubmit={handleSubmit}>
           <div>
@@ -78,7 +80,7 @@ function LoginPage () {
             <div className="relative flex items-center gap-2">
               <InputLogin
                 value={inputPassword}
-                type={showPassword ? "text" : "password"}
+                type={isShowPassword ? "text" : "password"}
                 placeholder="senha"
                 onChange={(e) => handleInputChange(e, "password")}
                 width="100%"

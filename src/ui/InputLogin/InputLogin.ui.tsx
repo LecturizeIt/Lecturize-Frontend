@@ -9,7 +9,7 @@ interface IInputProps {
   width?: string;
 }
 
-const InputLogin: React.FC<IInputProps> = ({ value , onChange, placeholder , type, height, width }) => {
+const InputLogin: React.FC<IInputProps> = ({ value , onChange, placeholder , type, height, width, ...rest }) => {
   return (
     <input
       type={type}
@@ -17,6 +17,7 @@ const InputLogin: React.FC<IInputProps> = ({ value , onChange, placeholder , typ
       onChange={onChange}
       placeholder={placeholder}
       style={{ width, height }}
+      {...rest}
       className="p-2 border w-[${width}] h-[${height}] border-gray-300 rounded-md focus:outline-none"
     />
   );
