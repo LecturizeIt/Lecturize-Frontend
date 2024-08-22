@@ -12,11 +12,11 @@ export const router = createBrowserRouter([
     errorElement: <NotFound />
   },
   {
-    path: "/Login",
+    path: "/login",
     element: <LoginPage />
   },
   {
-    path: "/Register",
+    path: "/register",
     element: <RegisterPage />
   }
 

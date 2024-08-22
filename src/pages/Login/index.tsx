@@ -3,21 +3,19 @@ import InputLogin from "../../ui/InputLogin/InputLogin.ui";
 import Button from "../../ui/Button/Button.ui";
 import { Icon } from "../../ui/Icon/Icon.ui";
 import { ErrorNotification } from "../../ui/ErrorNotification/ErrorNotification.ui";
-import { SuccessNotification } from "../../ui/SucessNotification/SucessNotification.ui"; 
+import { SuccessNotification } from "../../ui/SucessNotification/SucessNotification.ui";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
-function LoginPage () { const [inputEmail, setInputEmail] = useState("");
+function LoginPage () {
+  const { login } = useAuth();
+  const [inputEmail, setInputEmail] = useState("");
   const [inputPassword, setInputPassword] = useState("");
   const [isShowPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null); 
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-  // array fictício de usuários
-  const users = [
-    {
-      email: "user@example.com",
-      password: "password123",
-    },
-  ];
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -34,25 +32,22 @@ function LoginPage () { const [inputEmail, setInputEmail] = useState("");
     setShowPassword((prev) => !prev);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    try {
 
-    // verificacao simples para ver se email e a senha batem com user no array apenas para testar errornotification 
-    const user = users.find(
-      (user) =>
-        user.email === inputEmail && user.password === inputPassword
-    );
-
-    if (!user) {
-      setError("E-mail ou senha incorretos.");
-      setSuccessMessage(null); // 
-    } else {
+      await login(inputEmail, inputPassword); 
       setError(null);
-      setSuccessMessage("Login realizado com sucesso!"); 
-      console.log("Login bem-sucedido!");
+      setSuccessMessage("Login realizado com sucesso!");
+      navigate("/");
+    } catch (err) {
+
+      console.log("error:", err);
+      setError("E-mail ou senha incorretos.");
+      setSuccessMessage(null);
+
     }
   };
-
   return (
     <div className="w-screen h-screen bg-[#e2e2e2] flex items-center justify-center">
       <div className="bg-gradient-to-b from-white/90 to-white/40 rounded-lg w-[90%] max-w-[400px] md:max-w-[500px] lg:max-w-[600px] h-auto py-8 px-4 md:px-8 shadow-2xl flex flex-col items-center">

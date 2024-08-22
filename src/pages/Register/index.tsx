@@ -2,48 +2,55 @@ import { useState } from "react";
 import InputLogin from "../../ui/InputLogin/InputLogin.ui";
 import Button from "../../ui/Button/Button.ui";
 import { ErrorNotification } from "../../ui/ErrorNotification/ErrorNotification.ui";
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function RegisterPage () {
+  const { register } = useAuth();
   const [inputName, setInputName] = useState("");
   const [inputEmail, setInputEmail] = useState("");
   const [inputPassword, setInputPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    inputType: "name" | "email" | "password" | "confirmPassword"
+    inputType: "username" | "email" | "password" | "confirmPassword"
   ) => {
-    const value = e.target.value;
     switch (inputType) {
-    case "name":
-      setInputName(value);
+    case "username":
+      setInputName(e.target.value);
       break;
     case "email":
-      setInputEmail(value);
+      setInputEmail(e.target.value);
       break;
     case "password":
-      setInputPassword(value);
+      setInputPassword(e.target.value);
       break;
     case "confirmPassword":
-      setConfirmPassword(value);
+      setConfirmPassword(e.target.value);
       break;
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (inputPassword !== confirmPassword) {
       setError("As senhas não são compatíveis.");
       return;
     }
 
-    // adicionar logica para criar conta
-
-    setError(null);
-    console.log("Conta criada com sucesso!");
+    try {
+      await register(inputName, inputEmail, inputPassword); 
+      setError(null);
+      console.log("Conta criada com sucesso!");
+      navigate("/login");
+    } catch (err) {
+      console.log("error: ", err);
+      setError("Erro ao criar conta.");
+    }
   };
-
   return (
     <div className="w-screen h-screen bg-[#e2e2e2] flex items-center justify-center">
       <div className="bg-gradient-to-b from-white/90 to-white/40 rounded-lg w-[90%] max-w-[400px] md:max-w-[500px] lg:max-w-[600px] h-auto py-8 px-4 md:px-8 shadow-2xl flex flex-col items-center">
@@ -60,7 +67,7 @@ function RegisterPage () {
               value={inputName}
               type="text"
               placeholder="nome"
-              onChange={(e) => handleInputChange(e, "name")}
+              onChange={(e) => handleInputChange(e, "username")}
               width="100%"
             />
           </div>
