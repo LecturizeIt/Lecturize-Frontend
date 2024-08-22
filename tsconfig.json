@@ -1,14 +1,16 @@
 {
   "files": [],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
-    "baseUrl": "./src",
+    "baseUrl": "./",
     "paths": {
       "@pages": ["./src/pages"],
-      "*": ["node_modules/*"]
+      "*": ["node_modules/*"],
+      "@icons/*": ["./src/ui/Icon/*"]
     },
     "target": "ES6",
     "module": "commonjs",
@@ -16,7 +18,6 @@
     "jsx": "react",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-  },
+    "forceConsistentCasingInFileNames": true
+  }
 }
-  
