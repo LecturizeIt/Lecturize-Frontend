@@ -11,7 +11,7 @@ export const SuccessNotification = ({ message }: SuccessNotificationProps): JSX.
   useEffect(() => {
     if (message && message.length > 0) {
       setShouldShow(true);
-      setTimeout(() => setShouldShow(false), 2000); // Duração da exibição do alerta de sucesso
+      setTimeout(() => setShouldShow(false), 2000); 
     }
   }, [message]);
 
