@@ -101,6 +101,11 @@ function RegisterPage () {
             <Button type="submit" width="80%" height="50px" text="Criar Conta" />
           </div>
         </form>
+        <div className="pt-4">
+          <h3 className="font-semibold">
+            Já possui uma conta? <span className="text-[#861efd] hover:underline"><a href="/Login">Faça Login</a></span>
+          </h3>
+        </div>
       </div>
     </div>
   );

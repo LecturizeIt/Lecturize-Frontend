@@ -5,9 +5,10 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "paths": {
-      "@pages": ["./src/pages"]
+      "@pages": ["./src/pages"],
+      "*": ["node_modules/*"]
     },
     "target": "ES6",
     "module": "commonjs",
@@ -18,3 +19,4 @@
     "forceConsistentCasingInFileNames": true,
   },
 }
+  
