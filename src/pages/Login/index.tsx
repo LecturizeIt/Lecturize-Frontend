@@ -3,7 +3,6 @@ import InputLogin from "../../ui/InputLogin/InputLogin.ui";
 import Button from "../../ui/Button/Button.ui";
 import { Icon } from "../../ui/Icon/Icon.ui";
 import { ErrorNotification } from "../../ui/ErrorNotification/ErrorNotification.ui";
-import { SuccessNotification } from "../../ui/SucessNotification/SucessNotification.ui";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
@@ -13,7 +12,6 @@ function LoginPage () {
   const [inputPassword, setInputPassword] = useState("");
   const [isShowPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const navigate = useNavigate();
 
 
@@ -37,15 +35,11 @@ function LoginPage () {
     try {
 
       await login(inputEmail, inputPassword); 
-      setError(null);
-      setSuccessMessage("Login realizado com sucesso!");
       navigate("/");
     } catch (err) {
 
       console.log("error:", err);
       setError("E-mail ou senha incorretos.");
-      setSuccessMessage(null);
-
     }
   };
   return (
@@ -56,7 +50,6 @@ function LoginPage () {
         </h1>
 
         {error && <ErrorNotification error={error} />} 
-        {successMessage && <SuccessNotification message={successMessage} />} 
 
         <form className="flex flex-col w-full space-y-4" onSubmit={handleSubmit}>
           <div>
@@ -105,7 +98,7 @@ function LoginPage () {
         </form>
         <div className="pt-4">
           <h3 className="font-semibold">
-            Não possui uma conta? <span className="text-[#861efd] hover:underline"><a href="/Register">Inscreva-se de graça!</a></span>
+            Não possui uma conta? <span className="text-[#861efd] hover:underline"><a href="/Register">Inscreva-se gratuitamente!</a></span>
           </h3>
         </div>
       </div>
