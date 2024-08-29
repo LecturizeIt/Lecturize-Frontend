@@ -18,7 +18,7 @@ const Navbar = () => {
 
   return (
     <nav className="bg-[#e2e2e2] shadow-xl  text-black  p-4 flex justify-between items-center">
-      <h1 className="text-shadow text-2xl font-bold">Lecturize It</h1>
+      <h1 className="text-4xl font-extrabold bg-gradient-to-br from-[#861efd] to-[#2a27d6] bg-clip-text text-transparent">Lecturize It</h1>
       <Button
         onClick={handleAuthAction}
         text={user ? "Sair" : "Entrar"}

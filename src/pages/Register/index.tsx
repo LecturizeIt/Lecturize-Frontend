@@ -1,5 +1,5 @@
 import { useState } from "react";
-import InputLogin from "../../ui/InputLogin/InputLogin.ui";
+import Input from "../../ui/Input/Input.ui";
 import Button from "../../ui/Button/Button.ui";
 import { ErrorNotification } from "../../ui/ErrorNotification/ErrorNotification.ui";
 import { SuccessNotification } from "../../ui/SucessNotification/SucessNotification.ui";
@@ -44,9 +44,9 @@ function RegisterPage () {
     }
 
     try {
-      await register(inputName, inputEmail, inputPassword); 
+      await register(inputName, inputEmail, inputPassword);
       setError(null);
-      setSuccessMessage("Conta criada com sucesso!")
+      setSuccessMessage("Conta criada com sucesso!");
       setTimeout(navigate, 1000, "/login");
     } catch (err) {
       console.log("error: ", err);
@@ -62,10 +62,13 @@ function RegisterPage () {
         {successMessage && <SuccessNotification message={successMessage} />}
         {error && <ErrorNotification error={error} />}
 
-        <form className="flex flex-col w-full space-y-4" onSubmit={handleSubmit}>
+        <form
+          className="flex flex-col w-full space-y-4"
+          onSubmit={handleSubmit}
+        >
           <div>
             <h3 className="font-bold">Nome</h3>
-            <InputLogin
+            <Input
               value={inputName}
               type="text"
               placeholder="Nome..."
@@ -75,7 +78,7 @@ function RegisterPage () {
           </div>
           <div>
             <h3 className="font-bold">E-mail</h3>
-            <InputLogin
+            <Input
               value={inputEmail}
               type="email"
               placeholder="E-mail..."
@@ -86,7 +89,7 @@ function RegisterPage () {
 
           <div>
             <h3 className="font-bold">Senha</h3>
-            <InputLogin
+            <Input
               value={inputPassword}
               type="password"
               placeholder="Senha..."
@@ -97,7 +100,7 @@ function RegisterPage () {
 
           <div>
             <h3 className="font-bold">Confirmar senha</h3>
-            <InputLogin
+            <Input
               value={confirmPassword}
               type="password"
               placeholder="Confirmar senha..."
@@ -107,12 +110,20 @@ function RegisterPage () {
           </div>
 
           <div className="flex justify-center">
-            <Button type="submit" width="80%" height="50px" text="Criar Conta" />
+            <Button
+              type="submit"
+              width="80%"
+              height="50px"
+              text="Criar Conta"
+            />
           </div>
         </form>
         <div className="pt-4">
           <h3 className="font-semibold">
-            Já possui uma conta? <span className="text-[#861efd] hover:underline"><a href="/Login">Fazer login</a></span>
+            Já possui uma conta?{" "}
+            <span className="text-[#861efd] hover:underline">
+              <a href="/Login">Fazer login</a>
+            </span>
           </h3>
         </div>
       </div>

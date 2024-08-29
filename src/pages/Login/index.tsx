@@ -1,5 +1,5 @@
 import { useState } from "react";
-import InputLogin from "../../ui/InputLogin/InputLogin.ui";
+import Input from "../../ui/Input/Input.ui";
 import Button from "../../ui/Button/Button.ui";
 import { Icon } from "../../ui/Icon/Icon.ui";
 import { ErrorNotification } from "../../ui/ErrorNotification/ErrorNotification.ui";
@@ -13,7 +13,6 @@ function LoginPage () {
   const [isShowPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
-
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -33,11 +32,9 @@ function LoginPage () {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-
-      await login(inputEmail, inputPassword); 
+      await login(inputEmail, inputPassword);
       navigate("/");
     } catch (err) {
-
       console.log("error:", err);
       setError("E-mail ou senha incorretos.");
     }
@@ -49,12 +46,15 @@ function LoginPage () {
           Lecturize It
         </h1>
 
-        {error && <ErrorNotification error={error} />} 
+        {error && <ErrorNotification error={error} />}
 
-        <form className="flex flex-col w-full space-y-4" onSubmit={handleSubmit}>
+        <form
+          className="flex flex-col w-full space-y-4"
+          onSubmit={handleSubmit}
+        >
           <div>
             <h3 className="font-bold">E-mail</h3>
-            <InputLogin
+            <Input
               value={inputEmail}
               type="text"
               placeholder="e-mail"
@@ -66,7 +66,7 @@ function LoginPage () {
           <div>
             <h3 className="font-bold">Senha</h3>
             <div className="relative flex items-center gap-2">
-              <InputLogin
+              <Input
                 value={inputPassword}
                 type={isShowPassword ? "text" : "password"}
                 placeholder="senha"
@@ -84,7 +84,10 @@ function LoginPage () {
 
           <div className="flex items-center justify-between text-sm">
             <label className="flex items-center space-x-2">
-              <input type="checkbox" className="form-checkbox cursor-pointer text-blue-600" />
+              <input
+                type="checkbox"
+                className="form-checkbox cursor-pointer text-blue-600"
+              />
               <span className="cursor-pointer">Lembrar Senha</span>
             </label>
             <a href="#" className="text-[#861efd] hover:underline">
@@ -98,7 +101,10 @@ function LoginPage () {
         </form>
         <div className="pt-4">
           <h3 className="font-semibold">
-            Não possui uma conta? <span className="text-[#861efd] hover:underline"><a href="/Register">Inscreva-se gratuitamente!</a></span>
+            Não possui uma conta?{" "}
+            <span className="text-[#861efd] hover:underline">
+              <a href="/Register">Inscreva-se gratuitamente!</a>
+            </span>
           </h3>
         </div>
       </div>
