@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Input from "../../ui/Input/Input.ui";
 import Button from "../../ui/Button/Button.ui";
-import { Icon } from "../../ui/Icon/Icon.ui";
 import { ErrorNotification } from "../../ui/ErrorNotification/ErrorNotification.ui";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { EyeIcon } from "@heroicons/react/16/solid";
 
 function LoginPage () {
   const { login } = useAuth();
@@ -75,7 +75,7 @@ function LoginPage () {
               />
               <Button
                 onClick={togglePasswordVisibility}
-                icon={<Icon type="eyes" className="h-4 w-4" />}
+                icon={<EyeIcon type="eyes" className="h-4 w-4" />}
                 width="10%"
                 height="10%"
               />
