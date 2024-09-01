@@ -1,5 +1,12 @@
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { handleAuthAction } from "../../utils/handleAuthAction";
 
 const HeroSection = () => {
+
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
   return (
     <section className="w-full bg-gradient-to-r from-[#861efd] to-[#2a27d6] text-white pt-6">
       <div className="container mx-auto px-6 text-center">
@@ -7,8 +14,11 @@ const HeroSection = () => {
         <p className="text-lg mb-8">
           Simplifique suas palestras com ferramentas poderosas para gerenciar conteúdo, horários e mais.
         </p>
-        <button className="bg-white text-blue-600 font-bold px-6 py-3 rounded-full shadow-lg hover:bg-gray-200">
-          Comece Agora
+        <button className="bg-white text-blue-600 font-bold px-6 py-3 rounded-full shadow-lg hover:bg-gray-200"
+          onClick={() => {
+            handleAuthAction(user, navigate, logout);
+          }}>
+          Comece agora!
         </button>
       </div>
       <div className="mt-12">
