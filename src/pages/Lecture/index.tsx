@@ -4,6 +4,7 @@ import Navbar from "../../components/Navbar/Navbar.component";
 import { useAuth } from "../../context/AuthContext";
 import Button from "../../ui/Button/Button.ui";
 import { Modal } from "../../ui/Modal/Modal.ui";
+import LectureForm from "../../components/LectureForm/LectureForm.component";
 
 function Lecture () {
   const { user } = useAuth();
@@ -25,19 +26,13 @@ function Lecture () {
       <div className="flex flex-col items-center flex-grow mt-8 relative">
         {user && (
           <div className="h-[30px] w-full flex items-start justify-start">
-            <Button
-              onClick={openModal}
-              text="Criar Palestra"
-              className="mt-2 ml-4"
-            />
+            <Button onClick={openModal} text="Criar Palestra" className="mt-2 ml-4" />
           </div>
         )}
 
         {isModalOpen && (
           <Modal onClose={closeModal}>
-            <div>
-              <p>forms post lecture</p>
-            </div>
+            <LectureForm />
           </Modal>
         )}
 
