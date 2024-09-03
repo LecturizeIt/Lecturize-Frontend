@@ -1,7 +1,7 @@
 function Lecture () {
   return (
     <div>
-      <h3>Aq futura pagina para "manter" palestras 🔥</h3>
+      <h3>Aq futura pagina para as palestras 🔥</h3>
     </div>
   );
 }

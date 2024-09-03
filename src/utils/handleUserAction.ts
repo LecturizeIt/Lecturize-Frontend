@@ -10,10 +10,11 @@ interface IActionMap {
 }
 
 const actionMap: IActionMap = {
-  logout: (user, _, logout) => {
+  logout: (user, navigate, logout) => {
     if (user) {
       logout();
     }
+    navigate("/login");
   },
   redirectToLecture: (user, navigate, ) => {
     navigate(user ? "/lecture" : "/login");

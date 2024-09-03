@@ -25,11 +25,11 @@ const HeroSection = () => {
           Comece agora!
         </button>
       </div>
-      <div className="mt-12">
+      <div className="">
         <img
-          src="https://www.moblee.com.br/blog/wp-content/uploads/sites/2/2017/10/Plataformas-e-aplicativos-veja-como-eles-otimizam-palestras-e-semina%CC%81rios.png"
-          alt="Organização de Estudo"
-          className="mx-auto w-2/3"
+          src="/images/heroBanner.png"
+          alt="Palestra"
+          className="mx-auto"
         />
       </div>
     </section>
