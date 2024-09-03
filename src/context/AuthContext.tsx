@@ -3,7 +3,7 @@ import { getAccessToken, removeAccessToken } from "../utils/storage";
 import { login as apiLogin, register as apiRegister } from "../api/api";
 import axios from "axios";
 
-interface IUser {
+export interface IUser {
   username: string;
   email: string;
 }

@@ -4,6 +4,7 @@ import App from "./pages";
 import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
 import { NotFound } from "./pages/NotFound";
+import Lecture from "./pages/Lecture";
 
 export const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ export const router = createBrowserRouter([
   {
     path: "/register",
     element: <RegisterPage />
+  },
+  {
+    path: "/lecture",
+    element: <Lecture />
   }
 
 ]);
