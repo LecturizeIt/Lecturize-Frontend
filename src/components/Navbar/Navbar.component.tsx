@@ -14,7 +14,7 @@ const Navbar = () => {
   return (
     <nav className="text-black p-4 flex justify-between items-center bg-white shadow-md">
       <div className="flex-1">
-        <Link to="/">
+        <Link to="/" className="w-auto">
           <h1 className="text-4xl font-extrabold text-bg-gradient">
             Lecturize It
           </h1>
@@ -23,10 +23,7 @@ const Navbar = () => {
 
       {/* Menu hamburguesa para dispositivos mobile */}
       <div className="block lg:hidden">
-        <button
-          onClick={toggleMenu}
-          className="text-black focus:outline-none"
-        >
+        <button onClick={toggleMenu} className="text-black focus:outline-none">
           <svg
             className="w-6 h-6"
             fill="none"
@@ -46,10 +43,20 @@ const Navbar = () => {
 
       {/* Links e btn de Login/Logout para desktop */}
       <div className="hidden lg:flex items-center space-x-4 pr-4">
-        <Link to="/lecture" className="font-bold text-bg-gradient underline-animation">Palestras</Link>
+        <Link
+          to="/lecture"
+          className="font-bold text-bg-gradient underline-animation"
+        >
+          Palestras
+        </Link>
         {user && (
           <>
-            <Link to="/dashboard" className="font-bold text-bg-gradient underline-animation">Dashboard</Link>
+            <Link
+              to="/dashboard"
+              className="font-bold text-bg-gradient underline-animation"
+            >
+              Dashboard
+            </Link>
           </>
         )}
         <Button
@@ -60,18 +67,34 @@ const Navbar = () => {
       </div>
 
       {/* Menu colapsavel para dispositivos mobile */}
-      <div className={`shadow-2xl lg:hidden ${isMenuOpen ? "block" : "hidden"} absolute top-16 right-4 bg-white shadow-md p-4 rounded-lg`}>
+      <div
+        className={`shadow-2xl lg:hidden ${
+          isMenuOpen ? "block" : "hidden"
+        } absolute top-16 right-4 bg-white shadow-md p-4 rounded-lg`}
+      >
         <div className="flex flex-col space-y-2">
-          <Link to="/lecture" className="font-bold text-bg-gradient underline-animation" onClick={toggleMenu}>Palestras</Link>
+          <Link
+            to="/lecture"
+            className="font-bold text-bg-gradient underline-animation"
+            onClick={toggleMenu}
+          >
+            Palestras
+          </Link>
           {user && (
             <>
-              <Link to="/dashboard" className="font-bold text-bg-gradient underline-animation" onClick={toggleMenu}>Dashboard</Link>
+              <Link
+                to="/dashboard"
+                className="font-bold text-bg-gradient underline-animation"
+                onClick={toggleMenu}
+              >
+                Dashboard
+              </Link>
             </>
           )}
           <Button
             onClick={() => {
               handleUserAction(user, navigate, logout, "logout");
-              toggleMenu(); 
+              toggleMenu();
             }}
             text={user ? "Sair" : "Entrar"}
             width="full"

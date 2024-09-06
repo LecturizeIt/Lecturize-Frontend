@@ -1,12 +1,9 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
 import { getAccessToken, removeAccessToken } from "../utils/storage";
-import { login as apiLogin, register as apiRegister } from "../api/api";
+import { login as apiLogin, register as apiRegister } from "../api/login";
 import axios from "axios";
+import { IUser } from "../domain/models/user.model";
 
-export interface IUser {
-  username: string;
-  email: string;
-}
 
 interface IAuthContextType {
   user: IUser | null;

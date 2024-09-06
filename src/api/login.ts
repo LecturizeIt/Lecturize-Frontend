@@ -1,7 +1,7 @@
 import axios from "axios";
 import { setAccessToken } from "../utils/storage";
 
-const API_URL = "http://localhost:8080";
+const API_URL = import.meta.env.VITE_BASE_API_URL;
 
 export const login = async (email: string, password: string) => {
   try {

@@ -86,7 +86,7 @@ function LectureForm () {
       <div className="flex space-x-4 justify-center">
         <div
           className={`p-4 border rounded-md cursor-pointer flex-1 text-center ${
-            type === "HYBRID" ? "border-blue-500 bg-blue-100" : "border-gray-300"
+            type === "HYBRID" ? "border-purple-500 bg-purple-100" : "border-gray-300"
           }`}
           onClick={() => handleTypeChange("HYBRID")}
         >
@@ -94,7 +94,7 @@ function LectureForm () {
         </div>
         <div
           className={`p-4 border rounded-md cursor-pointer flex-1 text-center ${
-            type === "ONLINE" ? "border-blue-500 bg-blue-100" : "border-gray-300"
+            type === "ONLINE" ? "border-purple-500 bg-purple-100" : "border-gray-300"
           }`}
           onClick={() => handleTypeChange("ONLINE")}
         >
@@ -102,7 +102,7 @@ function LectureForm () {
         </div>
         <div
           className={`p-4 border rounded-md cursor-pointer flex-1 text-center ${
-            type === "PRESENTIAL" ? "border-blue-500 bg-blue-100" : "border-gray-300"
+            type === "PRESENTIAL" ? "border-purple-500 bg-purple-100" : "border-gray-300"
           }`}
           onClick={() => handleTypeChange("PRESENTIAL")}
         >
