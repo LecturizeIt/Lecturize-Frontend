@@ -14,7 +14,7 @@ const Navbar = () => {
   return (
     <nav className="text-black p-4 flex justify-between items-center bg-white shadow-md">
       <div className="flex-1">
-        <Link to="/" className="w-auto">
+        <Link to="/" className="">
           <h1 className="text-4xl font-extrabold text-bg-gradient">
             Lecturize It
           </h1>

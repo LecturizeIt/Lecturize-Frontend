@@ -1,5 +1,3 @@
-"use client";
-
 import { useCallback, useRef, useEffect, useState } from "react";
 
 export type ModalProps = {

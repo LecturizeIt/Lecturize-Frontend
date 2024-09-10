@@ -1,4 +1,4 @@
-import { IUser } from "../context/AuthContext";
+import { IUser } from "../domain/models/user.model";
 
 type NavigateFunction = (path: string) => void;
 type LogoutFunction = () => void;

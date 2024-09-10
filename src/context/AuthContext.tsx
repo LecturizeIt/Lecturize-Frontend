@@ -15,7 +15,7 @@ interface IAuthContextType {
 
 const AuthContext = createContext<IAuthContextType | undefined>(undefined);
 
-const API_BASE_URL = "http://localhost:8080";
+const API_URL = import.meta.env.VITE_BASE_API_URL;
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<IUser | null>(null);
@@ -26,7 +26,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const token = getAccessToken();
       if (token) {
         try {
-          const response = await axios.get(`${API_BASE_URL}/api/auth/user`, {
+          const response = await axios.get(`${API_URL}/api/auth/user`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           setUser(response.data);
@@ -45,7 +45,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const token = getAccessToken();
     if (token) {
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/auth/user`, {
+        const response = await axios.get(`${API_URL}/api/auth/user`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(response.data);
