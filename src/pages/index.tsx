@@ -5,6 +5,7 @@ import Footer from "../components/Footer/Footer.component";
 import { useLectures } from "../hooks/useLectures";
 import { useNavigate } from "react-router-dom";
 import ListCards from "../components/ListCard/ListCard.component";
+import { ErrorNotification } from "../ui/ErrorNotification/ErrorNotification.ui";
 
 function App () {
 
@@ -12,7 +13,7 @@ function App () {
   const navigate = useNavigate();
 
   if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>Error loading users</p>;
+  if (isError) return <ErrorNotification error="Erro ao carregar palestras" />;
 
   const handleLectureClick = (id: number) => {
     navigate(`/lectures/${id}`);

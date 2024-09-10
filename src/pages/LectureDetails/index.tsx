@@ -4,6 +4,7 @@ import { fetchLectureById } from "../../api/lecture";
 import { ILectureDetail } from "../../domain/models/lectureDetail.model";
 import Navbar from "../../components/Navbar/Navbar.component";
 import Footer from "../../components/Footer/Footer.component";
+import { ErrorNotification } from "../../ui/ErrorNotification/ErrorNotification.ui";
 
 function LectureDetails () {
   const { id } = useParams(); 
@@ -14,7 +15,7 @@ function LectureDetails () {
   });
 
   if (isLoading) return <p className="text-center text-gray-500">Loading lecture details...</p>;
-  if (isError) return <p className="text-center text-red-500">Error loading lecture details.</p>;
+  if (isError) return <ErrorNotification error="Erro ao carregar detalhes de palestra" />;;
 
   return (
     <div className="flex flex-col min-h-screen">
