@@ -1,11 +1,14 @@
 import { useState } from "react";
 import Input from "../../ui/Input/Input.ui";
 import Button from "../../ui/Button/Button.ui";
-import TagInput from "../TagInput/TagInput.component";
-
+// import TagInput from "../TagInput/TagInput.component";
+import { ILectureModel } from "../../domain/models/lecture.model";
+import { createLecture } from "../../api/lecture";
+import { Type } from "../../domain/enums/type.enums";
+import { convertToISO8601WithUTC } from "../../utils/convertToISO8601WithUTC";
 
 function LectureForm () {
-  const [type, setType] = useState("ONLINE");
+  const [type, setType] = useState<Type>(Type.HYBRID);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -15,7 +18,8 @@ function LectureForm () {
     endsAt: "",
     address: "",
     url: "",
-    tags: "",
+    type: Type.ONLINE
+    // tags: [{ id : 0 }],
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -23,13 +27,37 @@ function LectureForm () {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleTypeChange = (selectedType: string) => {
+  const handleTypeChange = (selectedType: Type) => {
     setType(selectedType);
+    setFormData({ ...formData, type: selectedType });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // const handleTagChange = (tags: { id: number }[]) => {
+  //   setFormData({ ...formData, tags });
+  // };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
+    
+    const startsAtIso = convertToISO8601WithUTC(formData.startsAt);
+    const endsAtIso = convertToISO8601WithUTC(formData.endsAt);
+
+    const lectureData: ILectureModel = {
+      ...formData,
+      type: formData.type,
+      startsAt: startsAtIso,
+      endsAt: endsAtIso,
+      // tags: formData.tags
+    };  
+
+    console.log("lecture data: ", lectureData);
+
+    try {
+      await createLecture(lectureData);
+      console.log("Palestra criada com sucesso");
+    } catch (error) {
+      console.error("Erro ao criar palestra:", error);
+    }
   };
 
   return (
@@ -88,7 +116,7 @@ function LectureForm () {
           className={`p-4 border rounded-md cursor-pointer flex-1 text-center ${
             type === "HYBRID" ? "border-purple-500 bg-purple-100" : "border-gray-300"
           }`}
-          onClick={() => handleTypeChange("HYBRID")}
+          onClick={() => handleTypeChange(Type.HYBRID)}
         >
           Híbrido
         </div>
@@ -96,7 +124,7 @@ function LectureForm () {
           className={`p-4 border rounded-md cursor-pointer flex-1 text-center ${
             type === "ONLINE" ? "border-purple-500 bg-purple-100" : "border-gray-300"
           }`}
-          onClick={() => handleTypeChange("ONLINE")}
+          onClick={() => handleTypeChange(Type.ONLINE)}
         >
           Online
         </div>
@@ -104,7 +132,7 @@ function LectureForm () {
           className={`p-4 border rounded-md cursor-pointer flex-1 text-center ${
             type === "PRESENTIAL" ? "border-purple-500 bg-purple-100" : "border-gray-300"
           }`}
-          onClick={() => handleTypeChange("PRESENTIAL")}
+          onClick={() => handleTypeChange(Type.PRESENTIAL)}
         >
           Presencial
         </div>
@@ -154,7 +182,7 @@ function LectureForm () {
           />
         )}
       </div>
-      <TagInput />
+      {/* <TagInput onChange={handleTagChange} /> */}
 
       <Button type="submit" text="Criar Palestra" />
     </form>

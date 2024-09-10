@@ -1,4 +1,5 @@
 export enum Type {
-  ONLINE,
-  PRESENTIAL,
+  ONLINE = "ONLINE",
+  PRESENTIAL = "PRESENTIAL",
+  HYBRID = "HYBRID"
 }

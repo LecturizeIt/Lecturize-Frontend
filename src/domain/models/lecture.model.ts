@@ -1,7 +1,7 @@
 import { Type } from "../enums/type.enums";
 
 export interface ILectureModel {
-    id: number;
+    id?: number;
     title: string;
     description: string;
     startsAt: string;

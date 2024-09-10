@@ -5,9 +5,10 @@ interface IInputProps extends React.InputHTMLAttributes<HTMLInputElement>{
   width?: string;
 }
 
-const Input: React.FC<IInputProps> = ({ type, value , onChange, placeholder, height, width }) => {
+const Input: React.FC<IInputProps> = ({ type, value, name, onChange, placeholder, height, width }) => {
   return (
     <input
+      name={name}
       type={type}
       value={value}
       onChange={onChange}
