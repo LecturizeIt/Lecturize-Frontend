@@ -5,6 +5,7 @@ import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
 import { NotFound } from "./pages/NotFound";
 import Lecture from "./pages/Lecture";
+import LectureDetails from "./pages/LectureDetails";
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
   {
     path: "/lecture",
     element: <Lecture />
-  }
+  },
+  {
+    path: "/lectures/:id", 
+    element: <LectureDetails />
+  },
 
 ]);
