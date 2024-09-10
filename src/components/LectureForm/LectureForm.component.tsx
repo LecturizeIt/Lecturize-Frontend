@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Input from "../../ui/Input/Input.ui";
 import Button from "../../ui/Button/Button.ui";
-// import TagInput from "../TagInput/TagInput.component";
 import { ILectureModel } from "../../domain/models/lecture.model";
 import { createLecture } from "../../api/lecture";
 import { Type } from "../../domain/enums/type.enums";
@@ -19,7 +18,6 @@ function LectureForm () {
     address: "",
     url: "",
     type: Type.ONLINE
-    // tags: [{ id : 0 }],
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -32,9 +30,6 @@ function LectureForm () {
     setFormData({ ...formData, type: selectedType });
   };
 
-  // const handleTagChange = (tags: { id: number }[]) => {
-  //   setFormData({ ...formData, tags });
-  // };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,7 +42,6 @@ function LectureForm () {
       type: formData.type,
       startsAt: startsAtIso,
       endsAt: endsAtIso,
-      // tags: formData.tags
     };  
 
     console.log("lecture data: ", lectureData);
@@ -182,7 +176,6 @@ function LectureForm () {
           />
         )}
       </div>
-      {/* <TagInput onChange={handleTagChange} /> */}
 
       <Button type="submit" text="Criar Palestra" />
     </form>

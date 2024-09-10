@@ -1,6 +1,5 @@
 import { Status } from "../enums/status.enum";
 import { Type } from "../enums/type.enums";
-import { ICategoryTag } from "./categoryTag.model";
 import { IUser } from "./user.model";
 
 export interface ILectureDetail {
@@ -14,7 +13,7 @@ export interface ILectureDetail {
   status: Status;
   url: string | null;
   address: string | null;
-  tags: ICategoryTag[];
+  tags: string[];
   organizer: IUser;
 }
   

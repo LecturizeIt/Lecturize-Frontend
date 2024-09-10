@@ -12,12 +12,10 @@ const Navbar = () => {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
-    <nav className="text-black p-4 flex justify-between items-center bg-white shadow-md">
-      <div className="flex-1">
-        <Link to="/" className="">
-          <h1 className="text-4xl font-extrabold text-bg-gradient">
-            Lecturize It
-          </h1>
+    <nav className="text-black p-2 flex justify-between items-center bg-white shadow-md">
+      <div className="flex-1 pl-4">
+        <Link to="/" >
+          <img className="h-20 w-20" src="/logo.svg" alt="logo lecturize it" />
         </Link>
       </div>
 

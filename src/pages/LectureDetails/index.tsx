@@ -17,6 +17,7 @@ function LectureDetails () {
   if (isLoading) return <p className="text-center text-gray-500">Loading lecture details...</p>;
   if (isError) return <ErrorNotification error="Erro ao carregar detalhes de palestra" />;;
 
+
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
@@ -33,8 +34,8 @@ function LectureDetails () {
           <p className="text-lg text-gray-700 mb-4"><strong>Address:</strong> {lecture?.address}</p>
           <ul className="list-disc list-inside mb-4">
             <strong>Tags:</strong>
-            {lecture?.tags.map(tag => (
-              <li key={tag.id} className="text-lg text-gray-700">{tag.name}</li>
+            {lecture?.tags.map((tag, index) => (
+              <li key={index} className="text-lg text-gray-700">{tag}</li>
             ))}
           </ul>
           <p className="text-lg text-gray-700"><strong>Organizer:</strong> {lecture?.organizer.email}</p>
