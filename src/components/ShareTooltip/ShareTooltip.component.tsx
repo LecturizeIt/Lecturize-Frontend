@@ -11,13 +11,13 @@ const ShareTooltip: React.FC<ShareTooltipProps> = ({ url, lecture }) => {
   return (
     <div className="flex gap-4">
       <FacebookShareButton url={url} aria-label="Compartilhar no Facebook">
-        <FacebookIcon />
+        <FacebookIcon className="w-8 h-8 rounded-lg"/>
       </FacebookShareButton>
       <WhatsappShareButton url={url} title={lecture.title} aria-label="Compartilhar no WhatsApp">
-        <WhatsappIcon />
+        <WhatsappIcon className="w-8 h-8 rounded-lg"/>
       </WhatsappShareButton>
       <LinkedinShareButton url={url} title={lecture.title} summary={lecture.description} aria-label="Compartilhar no LinkedIn">
-        <LinkedinIcon />
+        <LinkedinIcon className="w-8 h-8 rounded-lg"/>
       </LinkedinShareButton>
     </div>
   );
