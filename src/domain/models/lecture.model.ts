@@ -7,4 +7,5 @@ export interface ILectureModel {
     startsAt: string;
     endsAt: string;
     type: Type;
+    tags: number[];
 }

@@ -17,11 +17,13 @@ export const fetchLectureById = async (id: string): Promise<ILectureDetail> => {
   return data;
 };
 
-export const createLecture = async (lectureData: ILectureModel): Promise<void> => {
+export const createLecture = async (lectureData: ILectureModel, tagsId: number[]): Promise<void> => {
   try{
     const token = getAccessToken();
 
-    const response = await axios.post(`${API_URL}/api/lectures`, lectureData, {
+    const tags = tagsId.map(id => ({ id }));
+
+    const response = await axios.post(`${API_URL}/api/lectures`, { ...lectureData, tags}, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
