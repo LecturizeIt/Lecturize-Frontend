@@ -21,13 +21,13 @@ export const SuccessNotification = ({ message }: SuccessNotificationProps): JSX.
     <Transition
       show={shouldShow}
       enter="transition duration-300"
-      enterFrom="opacity-0 transform translate-y-10"
+      enterFrom="opacity-0 transform -translate-y-10"
       enterTo="opacity-100 transform translate-y-0"
       leave="transition duration-300"
       leaveFrom="opacity-100 transform translate-y-0"
-      leaveTo="opacity-0 transform translate-y-10"
+      leaveTo="opacity-0 transform -translate-y-10"
     >
-      <div className="fixed bottom-0 right-0 font-bold p-4 bg-green-500 text-white text-center rounded-lg shadow-lg m-4">
+      <div className="fixed top-4 left-1/2 transform -translate-x-1/2 font-bold p-4 bg-green-500 text-white text-center rounded-lg shadow-lg">
         <p className="text-sm whitespace-pre-wrap">
           {message}
         </p>

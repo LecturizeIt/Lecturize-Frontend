@@ -17,7 +17,7 @@ export const fetchLectureById = async (id: string): Promise<ILectureDetail> => {
   return data;
 };
 
-export const createLecture = async (lectureData: ILectureModel, tagsId: number[]): Promise<void> => {
+export const createLecture = async (lectureData: ILectureModel, tagsId: number[]): Promise<{ id: number }> => {
   try{
     const token = getAccessToken();
 
@@ -30,7 +30,9 @@ export const createLecture = async (lectureData: ILectureModel, tagsId: number[]
       },
     });
     console.log("lecture created: ", response.data);
+    return { id: response.data.id };
   }catch (error) {
     console.log("error", error);
+    return { id: -1 };
   }
 };

@@ -41,4 +41,12 @@ body {
       transform: scaleX(1);
       transform-origin: bottom left;
     }
+    .animate-spin {
+      animation: spin 1s linear infinite;
+    }
   }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
