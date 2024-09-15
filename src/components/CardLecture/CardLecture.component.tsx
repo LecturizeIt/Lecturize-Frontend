@@ -38,7 +38,7 @@ const CardLecture = ({ lecture, onClick }: CardLectureProps) => {
       <div className="relative flex-shrink-0 h-32 rounded-t-xl bg-blue-gray-500 bg-gradient-to-r from-[#861efd] to-[#2a27d6] overflow-hidden">
         <img className="object-cover w-full h-full" src="/images/heroBanner.png" alt="img default" />
       </div>
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-6 space-y-2">
         <h5 className="mb-2 text-xl font-semibold text-blue-gray-900">
           {truncateText(lecture.title, 15)}
         </h5>

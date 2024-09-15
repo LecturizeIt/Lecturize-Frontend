@@ -28,6 +28,8 @@ function LectureForm () {
     tags: [] as number[],
   });
 
+  const MAX_TAGS = 5;
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -52,15 +54,16 @@ function LectureForm () {
   }, []);
 
   const handleTagClick = (tagId: number) => {
-    if (formData.tags.includes(tagId)) {
+    const { tags } = formData;
+    if (tags.includes(tagId)) {
       setFormData({
         ...formData,
-        tags: formData.tags.filter((id) => id !== tagId),
+        tags: tags.filter((id) => id !== tagId),
       });
-    } else {
+    } else if (tags.length < MAX_TAGS) {
       setFormData({
         ...formData,
-        tags: [...formData.tags, tagId],
+        tags: [...tags, tagId],
       });
     }
   };
@@ -91,7 +94,6 @@ function LectureForm () {
       }
     }
   };
-
   return (
     <>
       <ErrorNotification error={error} />
@@ -215,6 +217,10 @@ function LectureForm () {
               width="100%"
             />
           )}
+        </div>
+
+        <div className="text-end mt-2">
+          {formData.tags.length}/{MAX_TAGS} 
         </div>
 
         <div className="flex flex-wrap gap-2">
