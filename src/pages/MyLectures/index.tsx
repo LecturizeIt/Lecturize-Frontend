@@ -6,7 +6,7 @@ import Button from "../../ui/Button/Button.ui";
 import { Modal } from "../../ui/Modal/Modal.ui";
 import LectureForm from "../../components/LectureForm/LectureForm.component";
 
-function Lecture () {
+function MyLectures () {
   const { user } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -49,4 +49,4 @@ function Lecture () {
   );
 }
 
-export default Lecture;
+export default MyLectures;

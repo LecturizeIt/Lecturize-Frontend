@@ -17,7 +17,7 @@ const actionMap: IActionMap = {
     navigate("/login");
   },
   redirectToLecture: (user, navigate, ) => {
-    navigate(user ? "/lecture" : "/login");
+    navigate(user ? "/my-lectures" : "/login");
   },
   redirectToLogin: (_, navigate) => {
     navigate("/login");

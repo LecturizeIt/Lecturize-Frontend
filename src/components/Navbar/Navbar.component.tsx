@@ -40,13 +40,23 @@ const Navbar = () => {
       </div>
 
       {/* Links e btn de Login/Logout para desktop */}
-      <div className="hidden lg:flex items-center space-x-4 pr-4">
+      <div className="hidden lg:flex items-center space-x-6 pr-4">
         <Link
-          to="/lecture"
+          to="/lectures"
           className="font-bold text-bg-gradient underline-animation"
         >
           Palestras
         </Link>
+        {user && (
+          <>
+            <Link
+              to="/my-lectures"
+              className="font-bold text-bg-gradient underline-animation"
+            >
+              Minhas Palestras
+            </Link>
+          </>
+        )}
         {user && (
           <>
             <Link
@@ -72,12 +82,22 @@ const Navbar = () => {
       >
         <div className="flex flex-col space-y-2">
           <Link
-            to="/lecture"
+            to="/lectures"
             className="font-bold text-bg-gradient underline-animation"
             onClick={toggleMenu}
           >
             Palestras
           </Link>
+          {user && (
+            <>
+              <Link
+                to="/my-lectures"
+                className="font-bold text-bg-gradient underline-animation"
+              >
+              Minhas Palestras
+              </Link>
+            </>
+          )}
           {user && (
             <>
               <Link

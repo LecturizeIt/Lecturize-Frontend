@@ -4,8 +4,9 @@ import App from "./pages";
 import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
 import { NotFound } from "./pages/NotFound";
-import Lecture from "./pages/Lecture";
+import Lecture from "./pages/Lectures";
 import LectureDetails from "./pages/LectureDetails";
+import MyLectures from "./pages/MyLectures";
 
 export const router = createBrowserRouter([
   {
@@ -22,12 +23,16 @@ export const router = createBrowserRouter([
     element: <RegisterPage />
   },
   {
-    path: "/lecture",
+    path: "/lectures",
     element: <Lecture />
   },
   {
     path: "/lectures/:id", 
     element: <LectureDetails />
   },
+  {
+    path: "my-Lectures/",
+    element: <MyLectures />
+  }
 
 ]);
