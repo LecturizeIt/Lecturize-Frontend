@@ -5,8 +5,8 @@ import { ILectureDetail } from "../../domain/models/lectureDetail.model";
 import Navbar from "../../components/Navbar/Navbar.component";
 import Footer from "../../components/Footer/Footer.component";
 import { ErrorNotification } from "../../ui/ErrorNotification/ErrorNotification.ui";
-import { dateFormatted } from "../../utils/date.utils";
-import { renderIfNotEmpty } from "../../utils/renderIfNotEmpty.utils";
+import { dateFormatted } from "../../utils/lib/date.utils";
+import { renderIfNotEmpty } from "../../utils/lib/renderIfNotEmpty.utils";
 
 function LectureDetails () {
   const { id } = useParams();

@@ -4,6 +4,7 @@ import Button from "../../ui/Button/Button.ui";
 import ShareTooltip from "../ShareTooltip/ShareTooltip.component";
 import Tooltip from "../../ui/Tooltip/Tooltip.ui";
 import { useRef, useState } from "react";
+import { truncateText } from "../../utils/lib/text.utils";
 
 type CardLectureProps = {
   lecture: ILectureModel;
@@ -39,10 +40,10 @@ const CardLecture = ({ lecture, onClick }: CardLectureProps) => {
       </div>
       <div className="flex-1 p-6">
         <h5 className="mb-2 text-xl font-semibold text-blue-gray-900">
-          {lecture.title}
+          {truncateText(lecture.title, 15)}
         </h5>
         <p className="text-base font-light text-gray-700">
-          {lecture.description}
+          {truncateText(lecture.description, 50)}
         </p>
         <p className="text-base font-light text-gray-700">
           Palestra do tipo - {lecture.type}
