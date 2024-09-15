@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { handleUserAction } from "../../utils/handleUserAction";
+import { handleUserAction } from "../../utils/handleUserAction.utils";
 import Button from "../../ui/Button/Button.ui";
 
 const Navbar = () => {
@@ -14,7 +14,7 @@ const Navbar = () => {
   return (
     <nav className="text-black p-2 flex justify-between items-center bg-white shadow-md">
       <div className="flex-1 pl-4">
-        <Link to="/" >
+        <Link to="/">
           <img className="h-20 w-20" src="/logo.svg" alt="logo lecturize it" />
         </Link>
       </div>

@@ -26,6 +26,6 @@ const Button = forwardRef<HTMLButtonElement, IButtonProps>(
   }
 );
 
-Button.displayName = "Button"; // Adicione isso para evitar warnings no React DevTools
+Button.displayName = "Button"; 
 
 export default Button;

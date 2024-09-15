@@ -5,18 +5,18 @@ import { ILectureDetail } from "../../domain/models/lectureDetail.model";
 import Navbar from "../../components/Navbar/Navbar.component";
 import Footer from "../../components/Footer/Footer.component";
 import { ErrorNotification } from "../../ui/ErrorNotification/ErrorNotification.ui";
+import { dateFormatted } from "../../utils/date.utils";
 
 function LectureDetails () {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const { data: lecture, isLoading, isError } = useQuery<ILectureDetail>({
     queryKey: ["lecture", id],
     queryFn: () => fetchLectureById(id as string),
-    enabled: !!id, 
+    enabled: !!id,
   });
 
   if (isLoading) return <p className="text-center text-gray-500">Loading lecture details...</p>;
-  if (isError) return <ErrorNotification error="Erro ao carregar detalhes de palestra" />;;
-
+  if (isError) return <ErrorNotification error="Erro ao carregar detalhes de palestra" />;
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -26,19 +26,29 @@ function LectureDetails () {
           <h1 className="text-3xl font-bold mb-4">{lecture?.title}</h1>
           <p className="text-lg text-gray-700 mb-2"><strong>Palestrante:</strong> {lecture?.lecturer}</p>
           <p className="text-lg text-gray-700 mb-2"><strong>Descrição:</strong> {lecture?.description}</p>
-          <p className="text-lg text-gray-700 mb-2"><strong>Começo:</strong> {lecture?.startsAt}</p>
-          <p className="text-lg text-gray-700 mb-2"><strong>Termino:</strong> {lecture?.endsAt}</p>
+          <p className="text-lg text-gray-700 mb-2">
+            <strong>Começo: </strong>
+            <time title={dateFormatted(lecture?.startsAt)} dateTime={lecture?.startsAt || ""}>
+              {dateFormatted(lecture?.startsAt)}
+            </time>
+          </p>
+          <p className="text-lg text-gray-700 mb-2">
+            <strong>Término: </strong>
+            <time title={dateFormatted(lecture?.endsAt)} dateTime={lecture?.endsAt || ""}>
+              {dateFormatted(lecture?.endsAt)}
+            </time>
+          </p>
           <p className="text-lg text-gray-700 mb-2"><strong>Tipo da palestra:</strong> {lecture?.type}</p>
           <p className="text-lg text-gray-700 mb-2"><strong>Status:</strong> {lecture?.status}</p>
           <p className="text-lg text-gray-700 mb-2"><strong>URL:</strong> {lecture?.url}</p>
-          <p className="text-lg text-gray-700 mb-4"><strong>Address:</strong> {lecture?.address}</p>
+          <p className="text-lg text-gray-700 mb-4"><strong>Endereço:</strong> {lecture?.address}</p>
           <ul className="list-disc list-inside mb-4">
             <strong>Tags:</strong>
             {lecture?.tags.map((tag, index) => (
               <li key={index} className="text-lg text-gray-700">{tag}</li>
             ))}
           </ul>
-          <p className="text-lg text-gray-700"><strong>Organizer:</strong> {lecture?.organizer.email}</p>
+          <p className="text-lg text-gray-700"><strong>Organizador:</strong> {lecture?.organizer.email}</p>
         </div>
       </div>
       <Footer />

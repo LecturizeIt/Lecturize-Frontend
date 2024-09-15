@@ -1,15 +1,18 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
-import { getAccessToken, removeAccessToken } from "../utils/storage";
+import { getAccessToken, removeAccessToken } from "../utils/storage.utils";
 import { login as apiLogin, register as apiRegister } from "../api/login";
 import axios from "axios";
 import { IUser } from "../domain/models/user.model";
-
 
 interface IAuthContextType {
   user: IUser | null;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (username: string, email: string, password: string) => Promise<void>;
+  register: (
+    username: string,
+    email: string,
+    password: string
+  ) => Promise<void>;
   logout: () => void;
 }
 
@@ -17,7 +20,9 @@ const AuthContext = createContext<IAuthContextType | undefined>(undefined);
 
 const API_URL = import.meta.env.VITE_BASE_API_URL;
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [user, setUser] = useState<IUser | null>(null);
   const isAuthenticated = !!user;
 
@@ -35,10 +40,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }
       }
     };
-  
+
     fetchUserData();
   }, []);
-  
 
   const login = async (email: string, password: string) => {
     await apiLogin(email, password);
@@ -55,9 +59,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
-  const register = async (username: string, email: string, password: string) => {
+  const register = async (
+    username: string,
+    email: string,
+    password: string
+  ) => {
     await apiRegister(username, email, password);
-   
   };
 
   const logout = () => {
@@ -66,7 +73,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login, register, logout }}>
+    <AuthContext.Provider
+      value={{ user, isAuthenticated, login, register, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

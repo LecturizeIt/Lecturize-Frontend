@@ -4,7 +4,7 @@ import Button from "../../ui/Button/Button.ui";
 import { ILectureModel } from "../../domain/models/lecture.model";
 import { createLecture } from "../../api/lecture";
 import { Type } from "../../domain/enums/type.enums";
-import { convertToISO8601WithUTC } from "../../utils/convertToISO8601WithUTC";
+import { convertToISO8601WithUTC } from "../../utils/convertToISO8601WithUTC.utils";
 import { fetchTags } from "../../api/tags";
 import { ErrorNotification } from "../../ui/ErrorNotification/ErrorNotification.ui";
 

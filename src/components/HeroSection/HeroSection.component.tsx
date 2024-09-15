@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { handleUserAction } from "../../utils/handleUserAction";
+import { handleUserAction } from "../../utils/handleUserAction.utils";
 
 const HeroSection = () => {
   const { user, logout } = useAuth();
@@ -26,11 +26,7 @@ const HeroSection = () => {
         </button>
       </div>
       <div className="">
-        <img
-          src="/images/heroBanner.png"
-          alt="Palestra"
-          className="mx-auto"
-        />
+        <img src="/images/heroBanner.png" alt="Palestra" className="mx-auto" />
       </div>
     </section>
   );
