@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { fetchLectureById } from "../../api/lecture";
 import { ILectureDetail } from "../../domain/models/lectureDetail.model";
@@ -60,13 +60,26 @@ function LectureDetails () {
             <p className="text-lg text-gray-700 mb-2"><strong>Status:</strong> {lecture?.status}</p>
           ))}
 
-          {renderIfNotEmpty(lecture?.url, () => (
-            <p className="text-lg text-gray-700 mb-2"><strong>URL:</strong> {lecture?.url}</p>
-          ))}
+          {lecture?.url && (
+            <p className="text-lg text-gray-700 mb-2">
+              <strong>URL:</strong>{" "}
+              <Link to={lecture.url} className="underline-animation text-[#861efd]">{lecture.url}</Link>
+            </p>
+          )}
 
-          {renderIfNotEmpty(lecture?.address, () => (
-            <p className="text-lg text-gray-700 mb-2"><strong>Endereço:</strong> {lecture?.address}</p>
-          ))}
+          {lecture?.address &&(
+            <p className="text-lg text-gray-700 mb-2">
+              <strong>Endereço: </strong> 
+              <Link
+                to={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(lecture?.address)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline-animation text-[#861efd]"
+              >
+                {lecture?.address}
+              </Link>
+            </p>
+          )}
 
           {renderIfNotEmpty(lecture?.tags?.length, () => (
             <ul className="list-disc list-inside mb-4">
