@@ -11,7 +11,6 @@ export const fetchLectures = async (): Promise<ILectureModel[]> => {
 };
 
 export const fetchLectureById = async (id: string): Promise<ILectureDetail> => {
-  const API_URL = import.meta.env.VITE_BASE_API_URL;
   const { data } = await axios.get<ILectureDetail>(
     `${API_URL}/api/lectures/${id}`
   );

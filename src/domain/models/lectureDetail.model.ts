@@ -7,6 +7,7 @@ export interface ILectureDetail {
   title: string; 
   description: string;
   type: Type;
+  createdAt: string;
   startsAt: string;
   endsAt: string;
   lecturer: string;

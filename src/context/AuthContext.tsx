@@ -31,7 +31,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       const token = getAccessToken();
       if (token) {
         try {
-          const response = await axios.get(`${API_URL}/api/auth/user`, {
+          const response = await axios.get(`${API_URL}/api/user`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           setUser(response.data);
@@ -49,7 +49,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     const token = getAccessToken();
     if (token) {
       try {
-        const response = await axios.get(`${API_URL}/api/auth/user`, {
+        const response = await axios.get(`${API_URL}/api/user`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(response.data);

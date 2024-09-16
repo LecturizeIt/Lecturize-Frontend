@@ -51,7 +51,7 @@ export function Modal ({ children, onClose }: ModalProps): JSX.Element | null {
 
       <div
         ref={wrapper}
-        className={`relative w-[100%] h-[100%] md:max-h-[80svh] sm:max-w-[600px] md:max-w-[900px] rounded-none md:rounded-lg md:p-5 bg-white flex items-center justify-center overflow-auto transform transition-transform duration-500 ${isVisible ? "scale-100" : "scale-95"}`}
+        className={`relative w-[100%] h-[100%] md:max-h-[100svh] sm:max-w-[600px] md:max-w-[900px] rounded-none md:rounded-lg md:p-5 bg-white flex items-center justify-center overflow-auto transform transition-transform duration-500 ${isVisible ? "scale-100" : "scale-95"}`}
       >
         <button
           className="z-10 absolute top-4 right-4 border-2 border-black/35 bg-white rounded-full p-2 hover:bg-opacity-100 transition"
