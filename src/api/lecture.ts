@@ -18,6 +18,15 @@ export const fetchLectureById = async (id: string): Promise<ILectureDetail> => {
   return data;
 };
 
+export const fetchLectureByUser = async (email: string): Promise<ILectureModel[]> => {
+  const { data } = await axios.get<ILectureModel[]>(`${API_URL}/api/lectures`, {
+    params: {
+      user: email
+    }
+  });
+  return data;
+};
+
 export const createLecture = async (
   lectureData: ILectureModel,
   tagsId: number[]
