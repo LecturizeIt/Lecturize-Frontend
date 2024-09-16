@@ -1,20 +1,39 @@
-import { Link, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { fetchLectureById } from "../../api/lecture";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { deleteLecture, fetchLectureById } from "../../api/lecture";
 import { ILectureDetail } from "../../domain/models/lectureDetail.model";
 import Navbar from "../../components/Navbar/Navbar.component";
 import Footer from "../../components/Footer/Footer.component";
 import { ErrorNotification } from "../../ui/ErrorNotification/ErrorNotification.ui";
 import { dateFormatted } from "../../utils/lib/date.utils";
 import { renderIfNotEmpty } from "../../utils/lib/renderIfNotEmpty.utils";
+import { useAuth } from "../../context/AuthContext";
 
 function LectureDetails () {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
+
   const { data: lecture, isLoading, isError } = useQuery<ILectureDetail>({
     queryKey: ["lecture", id],
     queryFn: () => fetchLectureById(id as string),
     enabled: !!id,
   });
+
+  const deleteMutation = useMutation({
+    mutationFn: () => deleteLecture(id as string),
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ["lectures", id]});
+      navigate("/lectures");
+    }
+  });
+
+  const handleDelete = () => {
+    if (window.confirm("Tem certeza que deseja deletar esta palestra?")){
+      deleteMutation.mutate();
+    }
+  };
 
   if (isLoading) return <p className="text-center text-gray-500">Loading lecture details...</p>;
   if (isError) return <ErrorNotification error="Erro ao carregar detalhes de palestra" />;
@@ -93,6 +112,15 @@ function LectureDetails () {
           {renderIfNotEmpty(lecture?.organizer.email, () => (
             <p className="text-lg text-gray-700"><strong>Organizador:</strong> {lecture?.organizer.email}</p>
           ))}
+
+          {user?.email === lecture?.organizer.email && (
+            <button
+              onClick={handleDelete}
+              className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
+            >
+              Deletar Palestra
+            </button>
+          )}
         </div>
       </div>
       <Footer />

@@ -60,7 +60,7 @@ function MyLectures () {
               />
             </div>
           ) : (
-            <p className="text-lg text-gray-600 text-center">Nenhuma palestra cadastrada no sistema.</p>
+            <p className="text-lg text-gray-600 text-center">Você não possui nenhuma palestra cadastrada no sistema.</p>
           )}
         </div>
         <div className="h-[300px] flex items-center justify-center">

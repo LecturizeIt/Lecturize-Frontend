@@ -53,3 +53,17 @@ export const createLecture = async (
     return { id: -1 };
   }
 };
+
+export const deleteLecture = async (lectureId: string) => {
+  const token = getAccessToken();
+  return axios.delete(`${API_URL}/api/lectures/${lectureId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+
+export const updateLecture = async (lectureId: string, lectureData: ILectureDetail, ) => {
+  const token = getAccessToken();
+  return axios.put(`${API_URL}/api/lectures/${lectureId}`, lectureData, {
+    headers: { Authorization: `Bearer ${token}` }, 
+  });
+};
