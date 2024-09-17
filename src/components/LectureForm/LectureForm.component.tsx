@@ -26,6 +26,7 @@ function LectureForm () {
     url: "",
     type: Type.ONLINE,
     tags: [] as number[],
+    maximumCapacity: "",
   });
 
   const MAX_TAGS = 5;
@@ -193,6 +194,14 @@ function LectureForm () {
                 placeholder="URL da Live"
                 width="100%"
               />
+              <Input
+                type="number"
+                name="maximumCapacity"
+                value={formData.maximumCapacity}
+                onChange={handleInputChange}
+                placeholder="Número maximo de participantes"
+                width="100%"
+              />
             </>
           )}
 
@@ -208,14 +217,22 @@ function LectureForm () {
           )}
 
           {type === "PRESENTIAL" && (
-            <Input
-              type="text"
-              name="address"
-              value={formData.address}
-              onChange={handleInputChange}
-              placeholder="Endereço do Local"
-              width="100%"
-            />
+            <>
+              <Input
+                type="text"
+                name="address"
+                value={formData.address}
+                onChange={handleInputChange}
+                placeholder="Endereço do Local"
+                width="100%" />
+              <Input
+                type="number"
+                name="maximumCapacity"
+                value={formData.maximumCapacity}
+                onChange={handleInputChange}
+                placeholder="Número maximo de participantes"
+                width="100%" />
+            </>
           )}
         </div>
 

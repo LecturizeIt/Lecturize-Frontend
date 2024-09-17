@@ -8,7 +8,6 @@ import ListCards from "../components/ListCard/ListCard.component";
 import { ErrorNotification } from "../ui/ErrorNotification/ErrorNotification.ui";
 
 function App () {
-
   const { data: lectures, isLoading, isError } = useLectures();
   const navigate = useNavigate();
 
@@ -20,10 +19,10 @@ function App () {
   };
 
   return (
-    <div className="w-full h-screen overflow-x-hidden">
+    <div className="w-full min-h-screen flex flex-col">
       <Navbar />
       
-      <main className="flex flex-col items-center">
+      <main className="flex-grow flex flex-col items-center">
         <HeroSection />
         <BenefitsSection />
 
@@ -43,14 +42,9 @@ function App () {
             <p className="text-lg text-gray-600 text-center">Nenhuma palestra cadastrada no sistema.</p>
           )}
         </div>
-
-
-        <div className="h-[300px] flex items-center justify-center">
-          <h2 className="text-2xl">Seção de Teste</h2>
-        </div>
-
-        <Footer />
       </main>
+
+      <Footer />
     </div>
   );
 }

@@ -16,5 +16,6 @@ export interface ILectureDetail {
   address: string | null;
   tags: string[];
   organizer: IUser;
+  maximumCapacity: number;
 }
   

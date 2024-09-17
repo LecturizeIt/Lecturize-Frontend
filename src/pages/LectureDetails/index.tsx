@@ -100,6 +100,11 @@ function LectureDetails () {
             </p>
           )}
 
+          {renderIfNotEmpty(lecture?.maximumCapacity, () => (
+            <p className="text-lg text-gray-700 mb-2"><strong>Quantidade máxima de participantes: </strong> {lecture?.maximumCapacity}</p>
+          ))}
+
+
           {renderIfNotEmpty(lecture?.tags?.length, () => (
             <ul className="list-disc list-inside mb-4">
               <strong>Tags:</strong>
@@ -116,7 +121,7 @@ function LectureDetails () {
           {user?.email === lecture?.organizer.email && (
             <button
               onClick={handleDelete}
-              className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
+              className="mt-4 bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600 duration-300"
             >
               Deletar Palestra
             </button>

@@ -63,9 +63,6 @@ function MyLectures () {
             <p className="text-lg text-gray-600 text-center">Você não possui nenhuma palestra cadastrada no sistema.</p>
           )}
         </div>
-        <div className="h-[300px] flex items-center justify-center">
-          <h2 className="text-2xl">Seção de Teste 3</h2>
-        </div>
       </div>
 
       <Footer />
