@@ -11,6 +11,7 @@ import { useAuth } from "../../context/AuthContext";
 import { Modal } from "../../ui/Modal/Modal.ui";
 import { useState } from "react";
 import LectureFormUpdate from "../../components/LectureFormUpdate/LectureFormUpdate.component";
+import LectureParticipants from "../../components/LectureParticipants/LectureParticipants.component";
 
 function LectureDetails () {
   const { id } = useParams();
@@ -55,7 +56,7 @@ function LectureDetails () {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <div className="flex-grow flex items-center justify-center p-6 bg-gray-100">
+      <div className="flex-grow flex items-center justify-center p-6 gap-4 bg-gray-100">
         <div className="max-w-3xl w-full bg-white shadow-md rounded-lg p-6">
           <h1 className="text-3xl font-bold mb-4">{lecture?.title}</h1>
           
@@ -152,6 +153,13 @@ function LectureDetails () {
           )}
 
         </div>
+        {user?.email === lecture?.organizer.email &&(
+          <>
+            <div className="max-w-3xl w-full bg-white shadow-md rounded-lg p-6">
+              <LectureParticipants lectureId={lecture.id} />
+            </div>
+          </>
+        )}
       </div>
       <Footer />
     </div>

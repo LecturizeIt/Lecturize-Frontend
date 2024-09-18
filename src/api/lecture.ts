@@ -2,6 +2,7 @@ import axios from "axios";
 import { ILectureModel } from "../domain/models/lecture.model";
 import { ILectureDetail } from "../domain/models/lectureDetail.model";
 import { getAccessToken } from "../utils/storage.utils";
+import { IUser } from "../domain/models/user.model";
 
 const API_URL = import.meta.env.VITE_BASE_API_URL;
 
@@ -15,6 +16,14 @@ export const fetchLectureById = async (id: string): Promise<ILectureDetail> => {
     `${API_URL}/api/lectures/${id}`
   );
 
+  return data;
+};
+
+export const fetchLectureParticipants = async (id: number): Promise<IUser[]> => {
+  const { data } = await axios.get<IUser[]>(
+    `${API_URL}/api/lectures/${id}/participants`
+  );
+  
   return data;
 };
 
