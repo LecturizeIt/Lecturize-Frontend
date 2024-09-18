@@ -3,6 +3,7 @@ import { ILectureModel } from "../domain/models/lecture.model";
 import { ILectureDetail } from "../domain/models/lectureDetail.model";
 import { getAccessToken } from "../utils/storage.utils";
 import { IUser } from "../domain/models/user.model";
+import { ITag } from "../domain/models/tag.model";
 
 const API_URL = import.meta.env.VITE_BASE_API_URL;
 
@@ -53,7 +54,7 @@ export const participateInLecture = async (id: string): Promise<void> => {
 
 export const createLecture = async (
   lectureData: ILectureModel,
-  tagsId: number[]
+  tagsId: ITag[]
 ): Promise<{ id: number }> => {
   try {
     const token = getAccessToken();

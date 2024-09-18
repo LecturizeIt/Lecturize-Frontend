@@ -1,4 +1,5 @@
 import { Type } from "../enums/type.enums";
+import { ITag } from "./tag.model";
 
 export interface ILectureModel {
     id?: number;
@@ -9,5 +10,5 @@ export interface ILectureModel {
     startsAt: string;
     endsAt: string;
     type: Type;
-    tags: number[];
+    tags: ITag[];
 }

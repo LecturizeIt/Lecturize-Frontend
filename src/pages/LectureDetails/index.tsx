@@ -147,7 +147,7 @@ function LectureDetails () {
             <ul className="list-disc list-inside mb-4">
               <strong>Tags:</strong>
               {lecture?.tags.map((tag, index) => ( 
-                <li key={index} className="text-lg text-gray-700">{tag}</li>
+                <li key={tag.id || index} className="text-lg text-gray-700">{tag.name}</li>
               ))}
             </ul>
           ))}

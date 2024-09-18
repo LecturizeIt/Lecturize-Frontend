@@ -10,6 +10,7 @@ import { fetchTags } from "../../api/tags";
 import { ErrorNotification } from "../../ui/ErrorNotification/ErrorNotification.ui";
 import { formatDateTimeForInput } from "../../utils/lib/date.utils";
 import { useNavigate } from "react-router-dom";
+import { ITag } from "../../domain/models/tag.model";
 
 interface ILectureFormUpdateProps {
   lecture: ILectureDetail;
@@ -32,7 +33,7 @@ const LectureFormUpdate: React.FC<ILectureFormUpdateProps> = ({ lecture, onClose
     address: lecture.address || "",
     url: lecture.url || "",
     type: lecture.type as Type,
-    tags: lecture.tags.map(tag => tag.id) || [],
+    tags: lecture.tags,
     maximumCapacity: lecture.maximumCapacity ? String(lecture.maximumCapacity) : "",
   });
 
@@ -79,22 +80,19 @@ const LectureFormUpdate: React.FC<ILectureFormUpdateProps> = ({ lecture, onClose
     setFormData(prevData => ({ ...prevData, type: selectedType }));
   };
 
-  const handleTagClick = (tagId: number) => {
-    setFormData(prevData => {
-      const { tags } = prevData;
-      if (tags.includes(tagId)) {
-        return {
-          ...prevData,
-          tags: tags.filter(id => id !== tagId),
-        };
-      } else if (tags.length < MAX_TAGS) {
-        return {
-          ...prevData,
-          tags: [...tags, tagId],
-        };
-      }
-      return prevData;
-    });
+  const handleTagClick = (tag: ITag) => {
+    const { tags } = formData;
+    if (tags.some(t => t.id === tag.id)) {
+      setFormData({
+        ...formData,
+        tags: tags.filter(t => t.id !== tag.id),
+      });
+    } else if (tags.length < MAX_TAGS) {
+      setFormData({
+        ...formData,
+        tags: [...tags, tag],
+      });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -112,7 +110,7 @@ const LectureFormUpdate: React.FC<ILectureFormUpdateProps> = ({ lecture, onClose
       type: formData.type,
       url: formData.url || undefined,
       address: formData.address || undefined,
-      tags: formData.tags.map(tagId => ({ id: tagId })), 
+      tags: formData.tags, 
       maximumCapacity: formData.maximumCapacity ? Number(formData.maximumCapacity) : undefined,
     };
 
@@ -270,13 +268,13 @@ const LectureFormUpdate: React.FC<ILectureFormUpdateProps> = ({ lecture, onClose
 
         <div className="flex flex-col">
           <div className="flex flex-wrap gap-2">
-            {availableTags.map(tag => (
+            {availableTags.map((tag) => (
               <div
                 key={tag.id}
-                onClick={() => handleTagClick(tag.id)}
                 className={`px-3 py-1 border rounded-full cursor-pointer ${
-                  formData.tags.includes(tag.id) ? "bg-gradient-to-br from-[#861efd] to-[#2a27d6] text-white" : "bg-gray-200"
+                  formData.tags.some(t => t.id === tag.id) ? "bg-gradient-to-br from-[#861efd] to-[#2a27d6] text-white" : "bg-gray-200"
                 }`}
+                onClick={() => handleTagClick(tag)}
               >
                 {tag.name}
               </div>
