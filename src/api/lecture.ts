@@ -36,6 +36,21 @@ export const fetchLectureByUser = async (email: string): Promise<ILectureModel[]
   return data;
 };
 
+export const participateInLecture = async (id: string): Promise<void> => {
+  const token = getAccessToken();
+
+  await axios.put(
+    `${API_URL}/api/lectures/${id}/participate`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
+
 export const createLecture = async (
   lectureData: ILectureModel,
   tagsId: number[]

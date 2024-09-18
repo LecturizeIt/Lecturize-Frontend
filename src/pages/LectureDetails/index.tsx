@@ -1,6 +1,6 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteLecture, fetchLectureById } from "../../api/lecture";
+import { deleteLecture, fetchLectureById, participateInLecture } from "../../api/lecture";
 import { ILectureDetail } from "../../domain/models/lectureDetail.model";
 import Navbar from "../../components/Navbar/Navbar.component";
 import Footer from "../../components/Footer/Footer.component";
@@ -12,6 +12,7 @@ import { Modal } from "../../ui/Modal/Modal.ui";
 import { useState } from "react";
 import LectureFormUpdate from "../../components/LectureFormUpdate/LectureFormUpdate.component";
 import LectureParticipants from "../../components/LectureParticipants/LectureParticipants.component";
+import { SuccessNotification } from "../../ui/SucessNotification/SucessNotification.ui";
 
 function LectureDetails () {
   const { id } = useParams();
@@ -19,6 +20,9 @@ function LectureDetails () {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const [isEditModalOpen, setEditModalOpen] = useState(false); 
+  const [successMessage, setSuccessMessage] = useState<string | undefined>(undefined);
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
+
 
   const handleOpenEditModal = () => {
     setEditModalOpen(true); 
@@ -46,6 +50,26 @@ function LectureDetails () {
     if (window.confirm("Tem certeza que deseja deletar esta palestra?")){
       deleteMutation.mutate();
     }
+  };
+
+  const participateMutation = useMutation({
+    mutationFn: () => participateInLecture(id as string),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["lecture", id] });
+      setSuccessMessage("Você participou da palestra com sucesso!");
+    },
+    onError: (error) => {
+      setErrorMessage(`Não é possivel participar dessa palestra. ERRO: ${error}`);
+    },
+  });
+
+
+  const handleParticipate = () => {
+    if (!user) {
+      alert("Você precisa estar logado para participar.");
+      return;
+    }
+    participateMutation.mutate();
   };
 
   if (isLoading) return <p className="text-center text-gray-500">Loading lecture details...</p>;
@@ -146,6 +170,13 @@ function LectureDetails () {
             </button></>
           )}
 
+          <button
+            onClick={handleParticipate}
+            className="mt-4 ml-2 bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600 duration-300"
+          >
+              Participar
+          </button>
+
           {isEditModalOpen && (
             <Modal onClose={handleCloseEditModal}>
               <LectureFormUpdate lecture={lecture} onClose={handleCloseEditModal} />
@@ -162,6 +193,8 @@ function LectureDetails () {
         )}
       </div>
       <Footer />
+      <ErrorNotification error={errorMessage} />
+      <SuccessNotification message={successMessage} />
     </div>
   );
 }
