@@ -6,7 +6,7 @@ export const dateFormatted = (date: string | Date | number | undefined): string 
 
   const parsedDate = typeof date === "string" || typeof date === "number" ? new Date(date) : date;
 
-  return format(parsedDate, "d 'de' LLLL 'às' HH:mm", {
+  return format(parsedDate, "d 'de' LLLL 'de' yyyy 'às' HH:mm", {
     locale: ptBR,
   });
 };
@@ -20,4 +20,9 @@ export const dateRelativeNow = (date: string | Date | number | undefined): strin
     locale: ptBR,
     addSuffix: true,
   });
+};
+
+export const formatDateTimeForInput = (dateTime: string) => {
+  const date = new Date(dateTime);
+  return date.toISOString().slice(0, 16); 
 };

@@ -1,4 +1,9 @@
-export function convertToISO8601WithUTC (dateTimeLocal: string): string {
-  const date = new Date(dateTimeLocal);
+export const convertToISO8601WithUTC = (dateString: string): string => {
+  const date = new Date(dateString);
+
+  if (isNaN(date.getTime())) {
+    throw new RangeError("Invalid date format");
+  }
+
   return date.toISOString();
-}
+};

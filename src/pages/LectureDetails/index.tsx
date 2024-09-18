@@ -8,12 +8,24 @@ import { ErrorNotification } from "../../ui/ErrorNotification/ErrorNotification.
 import { dateFormatted } from "../../utils/lib/date.utils";
 import { renderIfNotEmpty } from "../../utils/lib/renderIfNotEmpty.utils";
 import { useAuth } from "../../context/AuthContext";
+import { Modal } from "../../ui/Modal/Modal.ui";
+import { useState } from "react";
+import LectureFormUpdate from "../../components/LectureFormUpdate/LectureFormUpdate.component";
 
 function LectureDetails () {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const [isEditModalOpen, setEditModalOpen] = useState(false); 
+
+  const handleOpenEditModal = () => {
+    setEditModalOpen(true); 
+  };
+
+  const handleCloseEditModal = () => {
+    setEditModalOpen(false); 
+  };
 
   const { data: lecture, isLoading, isError } = useQuery<ILectureDetail>({
     queryKey: ["lecture", id],
@@ -37,6 +49,8 @@ function LectureDetails () {
 
   if (isLoading) return <p className="text-center text-gray-500">Loading lecture details...</p>;
   if (isError) return <ErrorNotification error="Erro ao carregar detalhes de palestra" />;
+
+  if (!lecture) return <p>Detalhes da palestra não encontrados.</p>;
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -104,11 +118,10 @@ function LectureDetails () {
             <p className="text-lg text-gray-700 mb-2"><strong>Quantidade máxima de participantes: </strong> {lecture?.maximumCapacity}</p>
           ))}
 
-
           {renderIfNotEmpty(lecture?.tags?.length, () => (
             <ul className="list-disc list-inside mb-4">
               <strong>Tags:</strong>
-              {lecture?.tags.map((tag, index) => (
+              {lecture?.tags.map((tag, index) => ( 
                 <li key={index} className="text-lg text-gray-700">{tag}</li>
               ))}
             </ul>
@@ -119,13 +132,25 @@ function LectureDetails () {
           ))}
 
           {user?.email === lecture?.organizer.email && (
-            <button
+            <><button
               onClick={handleDelete}
               className="mt-4 bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600 duration-300"
             >
               Deletar Palestra
-            </button>
+            </button><button
+              onClick={handleOpenEditModal}
+              className="mt-4 bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600 duration-300 ml-2"
+            >
+                Editar Palestra
+            </button></>
           )}
+
+          {isEditModalOpen && (
+            <Modal onClose={handleCloseEditModal}>
+              <LectureFormUpdate lecture={lecture} onClose={handleCloseEditModal} />
+            </Modal>
+          )}
+
         </div>
       </div>
       <Footer />

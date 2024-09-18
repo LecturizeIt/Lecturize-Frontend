@@ -54,16 +54,16 @@ export const createLecture = async (
   }
 };
 
-export const deleteLecture = async (lectureId: string) => {
+export const deleteLecture = async (id: string) => {
   const token = getAccessToken();
-  return axios.delete(`${API_URL}/api/lectures/${lectureId}`, {
+  return axios.delete(`${API_URL}/api/lectures/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
 
-export const updateLecture = async (lectureId: string, lectureData: ILectureDetail, ) => {
+export const updateLecture = async (id: string, lectureData: Partial<ILectureDetail>) => {
   const token = getAccessToken();
-  return axios.put(`${API_URL}/api/lectures/${lectureId}`, lectureData, {
+  return axios.put(`${API_URL}/api/lectures/${id}`, lectureData, {
     headers: { Authorization: `Bearer ${token}` }, 
   });
 };
