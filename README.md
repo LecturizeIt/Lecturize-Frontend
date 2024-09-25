@@ -26,7 +26,7 @@ Antes de começar, certifique-se de ter as seguintes ferramentas instaladas em s
 
 ### Scripts Disponíveis
 
-- **`npm start`** ou **`yarn start`**: Inicia o servidor de desenvolvimento.
+- **`npm run dev`** ou **`yarn dev`**: Inicia o servidor de desenvolvimento.
 - **`npm run build`** ou **`yarn build`**: Cria uma versão de produção do aplicativo.
 - **`npm run lint`** ou **`yarn lint`**: Verifica o código em busca de problemas de linting.
 
