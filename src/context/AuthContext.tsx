@@ -1,8 +1,9 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
 import { getAccessToken, removeAccessToken } from "../utils/storage.utils";
 import { login as apiLogin, register as apiRegister } from "../api/login";
-import axios from "axios";
 import { IUser } from "../domain/models/user.model";
+import { api } from "../api/api";
+
 
 interface IAuthContextType {
   user: IUser | null;
@@ -18,7 +19,6 @@ interface IAuthContextType {
 
 const AuthContext = createContext<IAuthContextType | undefined>(undefined);
 
-const API_URL = import.meta.env.VITE_BASE_API_URL;
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
@@ -31,7 +31,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       const token = getAccessToken();
       if (token) {
         try {
-          const response = await axios.get(`${API_URL}/api/user`, {
+          const response = await api.get("/api/user", {
             headers: { Authorization: `Bearer ${token}` },
           });
           setUser(response.data);
@@ -49,7 +49,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     const token = getAccessToken();
     if (token) {
       try {
-        const response = await axios.get(`${API_URL}/api/user`, {
+        const response = await api.get("/api/user", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(response.data);

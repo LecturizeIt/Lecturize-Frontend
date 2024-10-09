@@ -10,6 +10,7 @@ import { ErrorNotification } from "../../ui/ErrorNotification/ErrorNotification.
 
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
+import { ITag } from "../../domain/models/tag.model";
 
 function LectureForm () {
   const [type, setType] = useState<Type>(Type.HYBRID);
@@ -25,7 +26,7 @@ function LectureForm () {
     address: "",
     url: "",
     type: Type.ONLINE,
-    tags: [] as number[],
+    tags: [] as ITag[],
     maximumCapacity: "",
   });
 
@@ -54,17 +55,17 @@ function LectureForm () {
     loadTags();
   }, []);
 
-  const handleTagClick = (tagId: number) => {
+  const handleTagClick = (tag: ITag) => {
     const { tags } = formData;
-    if (tags.includes(tagId)) {
+    if (tags.some(t => t.id === tag.id)) {
       setFormData({
         ...formData,
-        tags: tags.filter((id) => id !== tagId),
+        tags: tags.filter(t => t.id !== tag.id),
       });
     } else if (tags.length < MAX_TAGS) {
       setFormData({
         ...formData,
-        tags: [...tags, tagId],
+        tags: [...tags, tag],
       });
     }
   };
@@ -81,6 +82,7 @@ function LectureForm () {
       endsAt: endsAtIso,
       type: formData.type,
       tags: formData.tags,
+      maximumCapacity: formData.maximumCapacity ? Number(formData.maximumCapacity) : undefined,
     };
 
     try {
@@ -245,9 +247,9 @@ function LectureForm () {
             <div
               key={tag.id}
               className={`px-3 py-1 border rounded-full cursor-pointer ${
-                formData.tags.includes(tag.id) ? "bg-gradient-to-br from-[#861efd] to-[#2a27d6] text-white" : "bg-gray-200"
+                formData.tags.some(t => t.id === tag.id) ? "bg-gradient-to-br from-[#861efd] to-[#2a27d6] text-white" : "bg-gray-200"
               }`}
-              onClick={() => handleTagClick(tag.id)}
+              onClick={() => handleTagClick(tag)}
             >
               {tag.name}
             </div>

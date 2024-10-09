@@ -21,7 +21,7 @@ function Lectures () {
       <Navbar />
 
       <main className="flex-grow">
-        <div className="max-w-7xl mx-auto p-6">
+        <div className="max-w-8xl mx-auto p-6">
           <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">Nossas Palestras</h2>
           <p className="text-lg text-gray-600 text-center mb-8">
             Explore as palestras que oferecemos e descubra temas interessantes para expandir seus conhecimentos. Clique em uma palestra para saber mais.

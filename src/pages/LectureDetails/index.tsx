@@ -1,7 +1,6 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteLecture, fetchLectureById } from "../../api/lecture";
-import { ILectureDetail } from "../../domain/models/lectureDetail.model";
+import { deleteLecture, fetchLectureById, fetchLectureParticipants, participateInLecture, unParticipateInLecture } from "../../api/lecture";
 import Navbar from "../../components/Navbar/Navbar.component";
 import Footer from "../../components/Footer/Footer.component";
 import { ErrorNotification } from "../../ui/ErrorNotification/ErrorNotification.ui";
@@ -9,8 +8,11 @@ import { dateFormatted } from "../../utils/lib/date.utils";
 import { renderIfNotEmpty } from "../../utils/lib/renderIfNotEmpty.utils";
 import { useAuth } from "../../context/AuthContext";
 import { Modal } from "../../ui/Modal/Modal.ui";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import LectureFormUpdate from "../../components/LectureFormUpdate/LectureFormUpdate.component";
+import LectureParticipants from "../../components/LectureParticipants/LectureParticipants.component";
+import { SuccessNotification } from "../../ui/SucessNotification/SucessNotification.ui";
+import { ILectureDetail } from "../../domain/models/lecture.model";
 
 function LectureDetails () {
   const { id } = useParams();
@@ -18,6 +20,9 @@ function LectureDetails () {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const [isEditModalOpen, setEditModalOpen] = useState(false); 
+  const [successMessage, setSuccessMessage] = useState<string | undefined>(undefined);
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
+
 
   const handleOpenEditModal = () => {
     setEditModalOpen(true); 
@@ -33,6 +38,17 @@ function LectureDetails () {
     enabled: !!id,
   });
 
+  const { data: participants, refetch} = useQuery({
+    queryKey: ["lectureParticipants", id],
+    queryFn: () => fetchLectureParticipants(Number(id)),
+    enabled: !!id,
+  });
+
+  const isParticipating = useMemo(() => {
+    return participants?.some(participant => participant.id === user?.id);
+  }, [participants, user]);
+
+
   const deleteMutation = useMutation({
     mutationFn: () => deleteLecture(id as string),
     onSuccess: () => {
@@ -47,6 +63,46 @@ function LectureDetails () {
     }
   };
 
+  const participateMutation = useMutation({
+    mutationFn: () => participateInLecture(id as string),
+    onSuccess: () => {
+      refetch();
+      queryClient.invalidateQueries({ queryKey: ["lecture", id] });
+      setSuccessMessage("Você participou da palestra com sucesso!");
+    },
+    onError: (error) => {
+      setErrorMessage(`Não é possivel participar dessa palestra. ERRO: ${error}`);
+    },
+  });
+
+  const unParticipateMutation = useMutation({
+    mutationFn: () => unParticipateInLecture(id as string),
+    onSuccess: () => {
+      refetch();
+      queryClient.invalidateQueries({ queryKey: ["lecture", id] });
+      setSuccessMessage("Você saiu da palestra com sucesso!");
+    },
+    onError: (error) => {
+      setErrorMessage(`Não foi possível sair da palestra. ERRO: ${error}`);
+    },
+  });
+
+  const handleParticipate = () => {
+    if (!user) {
+      alert("Você precisa estar logado para participar.");
+      return;
+    }
+    participateMutation.mutate();
+  };
+
+  const handleUnparticipate = () => {
+    if (!user) {
+      alert("Você precisa estar logado para sair da palestra.");
+      return;
+    }
+    unParticipateMutation.mutate();
+  };
+
   if (isLoading) return <p className="text-center text-gray-500">Loading lecture details...</p>;
   if (isError) return <ErrorNotification error="Erro ao carregar detalhes de palestra" />;
 
@@ -55,7 +111,7 @@ function LectureDetails () {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <div className="flex-grow flex items-center justify-center p-6 bg-gray-100">
+      <div className="flex-grow flex items-center justify-center p-6 gap-4 bg-gray-100">
         <div className="max-w-3xl w-full bg-white shadow-md rounded-lg p-6">
           <h1 className="text-3xl font-bold mb-4">{lecture?.title}</h1>
           
@@ -122,7 +178,7 @@ function LectureDetails () {
             <ul className="list-disc list-inside mb-4">
               <strong>Tags:</strong>
               {lecture?.tags.map((tag, index) => ( 
-                <li key={index} className="text-lg text-gray-700">{tag}</li>
+                <li key={tag.id || index} className="text-lg text-gray-700">{tag.name}</li>
               ))}
             </ul>
           ))}
@@ -145,6 +201,22 @@ function LectureDetails () {
             </button></>
           )}
 
+          {isParticipating ? (
+            <button
+              onClick={handleUnparticipate}
+              className="mt-4 ml-2 bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600 duration-300"
+            >
+              Sair da palestra
+            </button>
+          ) : (
+            <button
+              onClick={handleParticipate}
+              className="mt-4 ml-2 bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600 duration-300"
+            >
+              Participar
+            </button>
+          )}
+
           {isEditModalOpen && (
             <Modal onClose={handleCloseEditModal}>
               <LectureFormUpdate lecture={lecture} onClose={handleCloseEditModal} />
@@ -152,8 +224,17 @@ function LectureDetails () {
           )}
 
         </div>
+        {user?.email === lecture?.organizer.email &&(
+          <>
+            <div className="max-w-3xl w-full bg-white shadow-md rounded-lg p-6">
+              <LectureParticipants lectureId={lecture.id} />
+            </div>
+          </>
+        )}
       </div>
       <Footer />
+      <ErrorNotification error={errorMessage} />
+      <SuccessNotification message={successMessage} />
     </div>
   );
 }
