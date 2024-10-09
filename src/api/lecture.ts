@@ -43,6 +43,19 @@ export const participateInLecture = async (id: string): Promise<void> => {
   );
 };
 
+export const unParticipateInLecture = async (id: string): Promise<void> => {
+  const token = getAccessToken();
+
+  await api.put(`/api/lectures/${id}/unparticipate`, 
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
 
 export const createLecture = async (
   lectureData: ILectureModel,

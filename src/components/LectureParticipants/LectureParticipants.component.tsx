@@ -19,12 +19,7 @@ const LectureParticipants: React.FC<ILectureParticipantsProps> = ({ lectureId })
 
   return (
     <div>
-      <h2 className="text-2xl font-semibold mb-4">Participantes da palestra:</h2>
-      <ul className="list-disc list-inside">
-        {participants.map((participant) => (
-          <li key={participant.id} className="text-lg text-gray-700">{participant.email}</li>
-        ))}
-      </ul>
+      <p className="text-lg text-gray-700">{participants.length} Participantes</p>
     </div>
   );
 };
