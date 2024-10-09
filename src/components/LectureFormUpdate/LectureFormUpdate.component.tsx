@@ -2,7 +2,6 @@ import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import Input from "../../ui/Input/Input.ui";
 import Button from "../../ui/Button/Button.ui";
-import { ILectureDetail } from "../../domain/models/lectureDetail.model";
 import { updateLecture } from "../../api/lecture";
 import { Type } from "../../domain/enums/type.enums";
 import { convertToISO8601WithUTC } from "../../utils/lib/convertToISO8601WithUTC.utils";
@@ -11,6 +10,7 @@ import { ErrorNotification } from "../../ui/ErrorNotification/ErrorNotification.
 import { formatDateTimeForInput } from "../../utils/lib/date.utils";
 import { useNavigate } from "react-router-dom";
 import { ITag } from "../../domain/models/tag.model";
+import { ILectureDetail } from "../../domain/models/lecture.model";
 
 interface ILectureFormUpdateProps {
   lecture: ILectureDetail;

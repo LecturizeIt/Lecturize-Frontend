@@ -1,7 +1,6 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteLecture, fetchLectureById, participateInLecture } from "../../api/lecture";
-import { ILectureDetail } from "../../domain/models/lectureDetail.model";
 import Navbar from "../../components/Navbar/Navbar.component";
 import Footer from "../../components/Footer/Footer.component";
 import { ErrorNotification } from "../../ui/ErrorNotification/ErrorNotification.ui";
@@ -13,6 +12,7 @@ import { useState } from "react";
 import LectureFormUpdate from "../../components/LectureFormUpdate/LectureFormUpdate.component";
 import LectureParticipants from "../../components/LectureParticipants/LectureParticipants.component";
 import { SuccessNotification } from "../../ui/SucessNotification/SucessNotification.ui";
+import { ILectureDetail } from "../../domain/models/lecture.model";
 
 function LectureDetails () {
   const { id } = useParams();

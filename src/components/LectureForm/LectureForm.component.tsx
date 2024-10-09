@@ -82,6 +82,7 @@ function LectureForm () {
       endsAt: endsAtIso,
       type: formData.type,
       tags: formData.tags,
+      maximumCapacity: formData.maximumCapacity ? Number(formData.maximumCapacity) : undefined,
     };
 
     try {
