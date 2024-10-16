@@ -34,10 +34,12 @@ const CardLecture = ({ lecture, onClick }: CardLectureProps) => {
     setIsTooltipVisible(false);
   };
 
+  console.log(lecture.imageUrl);
+
   return (
     <div className="flex flex-col w-80 h-[450px] rounded-xl bg-white text-gray-700 shadow-xl">
       <div className="relative flex-shrink-0 h-44 rounded-t-xl bg-blue-gray-500 bg-gradient-to-r from-[#861efd] to-[#2a27d6] overflow-hidden">
-        <img className="object-cover w-full h-full" src="/images/heroBanner.png" alt="img default" />
+        <img className="object-cover w-full h-full" src={lecture.imageUrl} />
       </div>
       <div className="flex-1 p-6 space-y-2">
         <h5 className="mb-2 text-2xl font-extrabold text-blue-gray-900">
@@ -57,6 +59,7 @@ const CardLecture = ({ lecture, onClick }: CardLectureProps) => {
           Criado {dateRelativeNow(lecture.createdAt)}
         </time>
       </div>
+
       <div className="p-6 mt-auto flex justify-between items-center">
         <Button text="Ver mais" onClick={onClick} data-ripple-light="true" />
         <Tooltip isVisible={isTooltipVisible} onClickOutside={hideTooltip} position={tooltipPosition}>

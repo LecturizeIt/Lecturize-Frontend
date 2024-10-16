@@ -1,4 +1,4 @@
-import { fetchLectureByUser, fetchLectures } from "../api/lecture";
+import { fetchLectureByIdWithImage, fetchLectureByUser } from "../api/lecture";
 import { useAuth } from "../context/AuthContext";
 import { ILectureModel } from "../domain/models/lecture.model";
 import { useQuery } from "@tanstack/react-query";
@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 export const useLectures = () => {
   return useQuery<ILectureModel[]>({
     queryKey: ["lectures"],
-    queryFn: fetchLectures,
+    queryFn: fetchLectureByIdWithImage,
   });
 };
 

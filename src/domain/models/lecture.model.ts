@@ -16,6 +16,7 @@ export interface ILectureModel {
   url?: string | null;
   address?: string | null;
   maximumCapacity?: number;
+  imageUrl?: string ;
 }
 
 export interface ILectureDetail extends ILectureModel {

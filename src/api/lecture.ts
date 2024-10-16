@@ -15,6 +15,30 @@ export const fetchLectureById = async (id: string): Promise<ILectureDetail> => {
   return data;
 };
 
+const fetchLectureImage = async (id: number) => {
+  try {
+    const response = await api.get(`/api/lectures/${id}/image`);
+    return response.data; 
+  } catch (error) {
+    console.error(`Erro ao buscar a imagem para a palestra ${id}:`, error);
+    return "/images/heroBanner.png"; 
+  }
+};
+
+export const fetchLectureByIdWithImage = async () => {
+  const lectures = await fetchLectures();
+  const lecturesWithImages = await Promise.all(
+    lectures.map(async (lecture) => {
+      if (lecture.id !== undefined) {
+        const imageUrl = await fetchLectureImage(lecture.id);
+        return { ...lecture, imageUrl };
+      }
+      return lecture; 
+    })
+  );
+  return lecturesWithImages;
+};
+
 export const fetchLectureParticipants = async (id: number): Promise<IUser[]> => {
   const { data } = await api.get<IUser[]>(`/api/lectures/${id}/participants`);
   
