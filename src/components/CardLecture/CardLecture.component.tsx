@@ -36,28 +36,28 @@ const CardLecture = ({ lecture, onClick }: CardLectureProps) => {
 
   return (
     <div className="flex flex-col w-80 h-[450px] rounded-xl bg-white text-gray-700 shadow-xl">
-      <div className="relative flex-shrink-0 h-32 rounded-t-xl bg-blue-gray-500 bg-gradient-to-r from-[#861efd] to-[#2a27d6] overflow-hidden">
+      <div className="relative flex-shrink-0 h-44 rounded-t-xl bg-blue-gray-500 bg-gradient-to-r from-[#861efd] to-[#2a27d6] overflow-hidden">
         <img className="object-cover w-full h-full" src="/images/heroBanner.png" alt="img default" />
       </div>
       <div className="flex-1 p-6 space-y-2">
-        <h5 className="mb-2 text-xl font-semibold text-blue-gray-900">
+        <h5 className="mb-2 text-2xl font-extrabold text-blue-gray-900">
           {truncateText(lecture.title, 15)}
         </h5>
         <p className="text-base font-light text-gray-700">
-          <strong>Palestrante:</strong> {truncateText(lecture.lecturer, 15)}
+          <strong className="font-bold" >Palestrante:</strong> {truncateText(lecture.lecturer, 15)}
         </p>
         <p className="text-base font-light text-gray-700">
-          <strong>Descrição: </strong>{truncateText(lecture.description, 50)}
+          <strong className="font-bold">Descrição: </strong>{truncateText(lecture.description, 20)}
         </p>
-        <p className="text-base font-light text-gray-700">
-          <strong>Palestra do tipo:</strong> {lecture.type}
+        <p className="text-base font-light text-gray-700 mb-6">
+          <strong className="font-bold">Palestra do tipo:</strong> {lecture.type}
         </p>
 
-        <time dateTime={dateRelativeNow(lecture.createdAt)} title={lecture.createdAt}>
+        <time className="mt-6" dateTime={dateRelativeNow(lecture.createdAt)} title={lecture.createdAt}>
           Criado {dateRelativeNow(lecture.createdAt)}
         </time>
       </div>
-      <div className="p-6 pt-0 mt-auto flex justify-between items-center">
+      <div className="p-6 mt-auto flex justify-between items-center">
         <Button text="Ver mais" onClick={onClick} data-ripple-light="true" />
         <Tooltip isVisible={isTooltipVisible} onClickOutside={hideTooltip} position={tooltipPosition}>
           <ShareTooltip url={shareUrl} lecture={lecture} />

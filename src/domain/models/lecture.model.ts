@@ -1,4 +1,4 @@
-import { Status } from "../enums/status.enum";
+
 import { Type } from "../enums/type.enums";
 import { ITag } from "./tag.model";
 import { IUser } from "./user.model";
@@ -21,6 +21,6 @@ export interface ILectureModel {
 export interface ILectureDetail extends ILectureModel {
   id: number;
   createdAt: string;
-  status: Status;
+  status: string;
   organizer: IUser;
 }

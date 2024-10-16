@@ -69,7 +69,7 @@ export const createLecture = async (
     console.log("Data being sent:", { ...lectureData, tags });
 
     const response = await axios.post(
-      "https://lecturizeit.westus2.cloudapp.azure.com/api/lectures",
+      "http://localhost:8080/api/lectures",
       { ...lectureData, tags },
       {
         headers: {

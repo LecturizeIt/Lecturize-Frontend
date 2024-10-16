@@ -28,7 +28,7 @@ function MyLectures () {
   };
 
   return (
-    <div className="w-full min-h-screen overflow-x-hidden flex flex-col">
+    <div className="w-full min-h-screen overflow-x-hidden flex flex-col bg-gray-100">
       <Navbar />
 
       {!user && (
@@ -51,7 +51,7 @@ function MyLectures () {
         )}
 
         <div className="flex flex-col items-center justify-center">
-          <h2 className="text-2xl font-bold">Suas Palestras</h2>
+          <h2 className="text-2xl font-bold mb-4">Suas Palestras</h2>
           {lectures && lectures.length > 0 ? (
             <div className="flex flex-wrap items-center justify-center">
               <ListCards 

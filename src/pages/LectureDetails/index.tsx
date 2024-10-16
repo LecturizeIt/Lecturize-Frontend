@@ -13,6 +13,7 @@ import LectureFormUpdate from "../../components/LectureFormUpdate/LectureFormUpd
 import LectureParticipants from "../../components/LectureParticipants/LectureParticipants.component";
 import { SuccessNotification } from "../../ui/SucessNotification/SucessNotification.ui";
 import { ILectureDetail } from "../../domain/models/lecture.model";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/16/solid";
 
 function LectureDetails () {
   const { id } = useParams();
@@ -103,15 +104,33 @@ function LectureDetails () {
     unParticipateMutation.mutate();
   };
 
+  type LectureStatus = "Agendada" | "Completada" | "Cancelada" | "Em progresso";
+
+
+  const getStatusBgColor = (status: LectureStatus) => {
+    switch (status) {
+    case "Agendada":
+      return "bg-blue-500"; 
+    case "Completada":
+      return "bg-green-500"; 
+    case "Cancelada":
+      return "bg-red-500"; 
+    case "Em progresso":
+      return "bg-yellow-500"; 
+    default:
+      return "bg-gray-200"; 
+    }
+  };
+
   if (isLoading) return <p className="text-center text-gray-500">Loading lecture details...</p>;
   if (isError) return <ErrorNotification error="Erro ao carregar detalhes de palestra" />;
 
   if (!lecture) return <p>Detalhes da palestra não encontrados.</p>;
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-gray-100">
       <Navbar />
-      <div className="flex-grow flex items-center justify-center p-6 gap-4 bg-gray-100">
+      <div className="flex-grow flex items-center justify-center p-6 gap-4">
         <div className="max-w-3xl w-full bg-white shadow-md rounded-lg p-6">
           <h1 className="text-3xl font-bold mb-4">{lecture?.title}</h1>
           
@@ -144,9 +163,11 @@ function LectureDetails () {
           {renderIfNotEmpty(lecture?.type, () => (
             <p className="text-lg text-gray-700 mb-2"><strong>Tipo da palestra:</strong> {lecture?.type}</p>
           ))}
-
+          
           {renderIfNotEmpty(lecture?.status, () => (
-            <p className="text-lg text-gray-700 mb-2"><strong>Status:</strong> {lecture?.status}</p>
+            <p className="text-lg inline-block text-gray-700 mb-2 " >
+              <strong>Status:</strong> <span className={`rounded-2xl p-2 text-white font-bold ${getStatusBgColor(lecture?.status as LectureStatus)}`}>{lecture?.status}</span>
+            </p>
           ))}
 
           {lecture?.url && (
@@ -184,38 +205,46 @@ function LectureDetails () {
           ))}
 
           {renderIfNotEmpty(lecture?.organizer.email, () => (
-            <p className="text-lg text-gray-700"><strong>Organizador:</strong> {lecture?.organizer.email}</p>
+            <p className="text-lg text-gray-700"><strong>Organizador:</strong> {lecture?.organizer.username}</p>
           ))}
 
-          {user?.email === lecture?.organizer.email && (
-            <><button
-              onClick={handleDelete}
-              className="mt-4 bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600 duration-300"
-            >
-              Deletar Palestra
-            </button><button
-              onClick={handleOpenEditModal}
-              className="mt-4 bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600 duration-300 ml-2"
-            >
-                Editar Palestra
-            </button></>
-          )}
+          <div className="flex justify-between">
+            <div>
+              {user?.email === lecture?.organizer.email && (
+                <>
+                  <button
+                    onClick={handleDelete}
+                    className="mt-2 bg-red-500 text-white font-bold p-2  rounded hover:bg-red-600 duration-300 hover:scale-105"
+                  >
+                    <TrashIcon className="h-6 w-6" />
+                  </button><button
+                    onClick={handleOpenEditModal}
+                    className="mt-2 bg-blue-500 text-white font-bold p-2  rounded hover:bg-blue-600 duration-300 hover:scale-105 ml-2"
+                  >
+                    <PencilSquareIcon className="h-6 2-6" />
+                  </button>
+                </>
+              )}
+            </div>
 
-          {isParticipating ? (
-            <button
-              onClick={handleUnparticipate}
-              className="mt-4 ml-2 bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600 duration-300"
-            >
+            <div>
+              {isParticipating ? (
+                <button
+                  onClick={handleUnparticipate}
+                  className="mt-2 ml-2 bg-red-500 text-white font-bold p-2 rounded hover:bg-red-600 duration-300 hover:scale-105"
+                >
               Sair da palestra
-            </button>
-          ) : (
-            <button
-              onClick={handleParticipate}
-              className="mt-4 ml-2 bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600 duration-300"
-            >
+                </button>
+              ) : (
+                <button
+                  onClick={handleParticipate}
+                  className="mt-2 ml-2 bg-green-500 text-white font-bold p-2 rounded hover:bg-green-600 duration-300 hover:scale-105"
+                >
               Participar
-            </button>
-          )}
+                </button>
+              )}
+            </div>
+          </div>
 
           {isEditModalOpen && (
             <Modal onClose={handleCloseEditModal}>
