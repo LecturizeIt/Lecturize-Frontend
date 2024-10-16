@@ -228,20 +228,22 @@ function LectureDetails () {
             </div>
 
             <div>
-              {isParticipating ? (
-                <button
-                  onClick={handleUnparticipate}
-                  className="mt-2 ml-2 bg-red-500 text-white font-bold p-2 rounded hover:bg-red-600 duration-300 hover:scale-105"
-                >
-              Sair da palestra
-                </button>
-              ) : (
-                <button
-                  onClick={handleParticipate}
-                  className="mt-2 ml-2 bg-green-500 text-white font-bold p-2 rounded hover:bg-green-600 duration-300 hover:scale-105"
-                >
-              Participar
-                </button>
+              {lecture?.status === "Completada" || lecture?.status === "Cancelada" ? null : (
+                isParticipating ? (
+                  <button
+                    onClick={handleUnparticipate}
+                    className="mt-2 ml-2 bg-red-500 text-white font-bold p-2 rounded hover:bg-red-600 duration-300 hover:scale-105"
+                  >
+          Sair da palestra
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleParticipate}
+                    className="mt-2 ml-2 bg-green-500 text-white font-bold p-2 rounded hover:bg-green-600 duration-300 hover:scale-105"
+                  >
+          Participar
+                  </button>
+                )
               )}
             </div>
           </div>
