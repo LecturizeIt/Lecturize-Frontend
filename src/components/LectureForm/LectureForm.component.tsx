@@ -119,7 +119,7 @@ function LectureForm () {
             width="50%"
           />
         </div>
-
+  
         <div className="flex flex-col">
           <textarea
             name="description"
@@ -130,26 +130,31 @@ function LectureForm () {
             rows={4}
           />
         </div>
-
+  
         <div className="flex space-x-4">
-          <Input
-            type="datetime-local"
-            name="startsAt"
-            value={formData.startsAt}
-            onChange={handleInputChange}
-            placeholder="Início"
-            width="50%"
-          />
-          <Input
-            type="datetime-local"
-            name="endsAt"
-            value={formData.endsAt}
-            onChange={handleInputChange}
-            placeholder="Fim"
-            width="50%"
-          />
+          <div className="flex flex-col w-1/2">
+            <p>Horário e data de início:</p>
+            <Input
+              type="datetime-local"
+              name="startsAt"
+              value={formData.startsAt}
+              onChange={handleInputChange}
+              placeholder="Início"
+            />
+          </div>
+  
+          <div className="flex flex-col w-1/2">
+            <p>Horário e data de término:</p>
+            <Input
+              type="datetime-local"
+              name="endsAt"
+              value={formData.endsAt}
+              onChange={handleInputChange}
+              placeholder="Fim"
+            />
+          </div>
         </div>
-
+  
         <div className="flex space-x-4 justify-center">
           <div
             className={`p-4 border rounded-md cursor-pointer flex-1 text-center ${
@@ -157,7 +162,7 @@ function LectureForm () {
             }`}
             onClick={() => handleTypeChange(Type.HYBRID)}
           >
-          Híbrido
+            Híbrido
           </div>
           <div
             className={`p-4 border rounded-md cursor-pointer flex-1 text-center ${
@@ -165,7 +170,7 @@ function LectureForm () {
             }`}
             onClick={() => handleTypeChange(Type.ONLINE)}
           >
-          Online
+            Online
           </div>
           <div
             className={`p-4 border rounded-md cursor-pointer flex-1 text-center ${
@@ -173,10 +178,10 @@ function LectureForm () {
             }`}
             onClick={() => handleTypeChange(Type.PRESENTIAL)}
           >
-          Presencial
+            Presencial
           </div>
         </div>
-
+  
         <div className="flex flex-col space-y-4">
           {type === "HYBRID" && (
             <>
@@ -201,12 +206,12 @@ function LectureForm () {
                 name="maximumCapacity"
                 value={formData.maximumCapacity}
                 onChange={handleInputChange}
-                placeholder="Número maximo de participantes"
+                placeholder="Número máximo de participantes"
                 width="100%"
               />
             </>
           )}
-
+  
           {type === "ONLINE" && (
             <Input
               type="text"
@@ -217,7 +222,7 @@ function LectureForm () {
               width="100%"
             />
           )}
-
+  
           {type === "PRESENTIAL" && (
             <>
               <Input
@@ -226,22 +231,25 @@ function LectureForm () {
                 value={formData.address}
                 onChange={handleInputChange}
                 placeholder="Endereço do Local"
-                width="100%" />
+                width="100%"
+              />
               <Input
                 type="number"
                 name="maximumCapacity"
                 value={formData.maximumCapacity}
                 onChange={handleInputChange}
-                placeholder="Número maximo de participantes"
-                width="100%" />
+                placeholder="Número máximo de participantes"
+                width="100%"
+              />
             </>
           )}
+  
         </div>
-
+  
         <div className="text-end mt-2">
-          {formData.tags.length}/{MAX_TAGS} 
+          {formData.tags.length}/{MAX_TAGS}
         </div>
-
+  
         <div className="flex flex-wrap gap-2">
           {availableTags.map((tag) => (
             <div
@@ -255,7 +263,7 @@ function LectureForm () {
             </div>
           ))}
         </div>
-
+  
         <Button type="submit" text="Criar Palestra" />
       </form>
     </>

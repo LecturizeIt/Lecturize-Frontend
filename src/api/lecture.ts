@@ -12,17 +12,12 @@ export const fetchLectures = async (): Promise<ILectureModel[]> => {
 
 export const fetchLectureById = async (id: string): Promise<ILectureDetail> => {
   const { data } = await api.get<ILectureDetail>(`/api/lectures/${id}`);
-  return data;
+  const imageUrl = getImageUrl(Number(id));
+  return { ...data, imageUrl };
 };
 
-const fetchLectureImage = async (id: number) => {
-  try {
-    const response = await api.get(`/api/lectures/${id}/image`);
-    return response.data; 
-  } catch (error) {
-    console.error(`Erro ao buscar a imagem para a palestra ${id}:`, error);
-    return "/images/heroBanner.png"; 
-  }
+const getImageUrl = (id: number) => {
+  return `https://lecturizeit.westus2.cloudapp.azure.com/api/lectures/${id}/image`;
 };
 
 export const fetchLectureByIdWithImage = async () => {
@@ -30,7 +25,7 @@ export const fetchLectureByIdWithImage = async () => {
   const lecturesWithImages = await Promise.all(
     lectures.map(async (lecture) => {
       if (lecture.id !== undefined) {
-        const imageUrl = await fetchLectureImage(lecture.id);
+        const imageUrl = getImageUrl(lecture.id);
         return { ...lecture, imageUrl };
       }
       return lecture; 
@@ -51,7 +46,16 @@ export const fetchLectureByUser = async (email: string): Promise<ILectureModel[]
       user: email
     }
   });
-  return data;
+  const lecturesWithImages = await Promise.all(
+    data.map(async (data) => {
+      if(data.id !== undefined) {
+        const imageUrl = getImageUrl(data.id);
+        return { ...data, imageUrl };
+      }
+      return data;
+    })
+  );
+  return lecturesWithImages;
 };
 
 export const participateInLecture = async (id: string): Promise<void> => {
@@ -122,4 +126,23 @@ export const updateLecture = async (id: string, lectureData: Partial<ILectureDet
   return api.put(`/api/lectures/${id}`, lectureData, {
     headers: { Authorization: `Bearer ${token}` }, 
   });
+};
+
+export const uploadImage = async (id: string, imageFile: File, description: string) => {
+  const token = getAccessToken();
+
+  const formData = new FormData(); 
+  formData.append("file", imageFile); 
+  formData.append("description", description);
+
+  try{
+    const response = await api.put(`/api/lectures/${id}/image`, formData, {
+      headers: { 
+        Authorization: `Bearer ${token}`, 
+      },
+    });
+    return response.data;
+  }catch (error) {
+    console.log("error", error);
+  }
 };

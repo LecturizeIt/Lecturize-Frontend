@@ -9,6 +9,7 @@ import ListCards from "../../components/ListCard/ListCard.component";
 import { useNavigate } from "react-router-dom";
 import { useLecturesByUser } from "../../hooks/useLectures";
 import { ErrorNotification } from "../../ui/ErrorNotification/ErrorNotification.ui";
+import LoadingSpinner from "../../ui/Loading/Loading.ui";
 
 function MyLectures () {
   const { user } = useAuth();
@@ -17,7 +18,7 @@ function MyLectures () {
 
   const { data: lectures, isLoading, isError } = useLecturesByUser();
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <LoadingSpinner />;
   if (isError) return <ErrorNotification error="Erro ao carregar palestras" />;
 
   const openModal = () => setIsModalOpen(true);
@@ -50,7 +51,7 @@ function MyLectures () {
           </Modal>
         )}
 
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center mb-4">
           <h2 className="text-2xl font-bold mb-4">Suas Palestras</h2>
           {lectures && lectures.length > 0 ? (
             <div className="flex flex-wrap items-center justify-center">

@@ -14,6 +14,7 @@ import LectureParticipants from "../../components/LectureParticipants/LecturePar
 import { SuccessNotification } from "../../ui/SucessNotification/SucessNotification.ui";
 import { ILectureDetail } from "../../domain/models/lecture.model";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/16/solid";
+import LoadingSpinner from "../../ui/Loading/Loading.ui";
 
 function LectureDetails () {
   const { id } = useParams();
@@ -104,35 +105,42 @@ function LectureDetails () {
     unParticipateMutation.mutate();
   };
 
-  type LectureStatus = "Agendada" | "Completada" | "Cancelada" | "Em progresso";
+  type LectureStatus = "Agendada" | "Finalizada" | "Cancelada" | "Em andamento";
 
 
   const getStatusBgColor = (status: LectureStatus) => {
     switch (status) {
     case "Agendada":
       return "bg-blue-500"; 
-    case "Completada":
+    case "Finalizada":
       return "bg-green-500"; 
     case "Cancelada":
       return "bg-red-500"; 
-    case "Em progresso":
+    case "Em andamento":
       return "bg-yellow-500"; 
     default:
       return "bg-gray-200"; 
     }
   };
 
-  if (isLoading) return <p className="text-center text-gray-500">Loading lecture details...</p>;
+  if (isLoading) return <LoadingSpinner />;
+
   if (isError) return <ErrorNotification error="Erro ao carregar detalhes de palestra" />;
 
   if (!lecture) return <p>Detalhes da palestra não encontrados.</p>;
+
+  const defaultCoverUrl = "/images/heroBanner.png";
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <Navbar />
       <div className="flex-grow flex items-center justify-center p-6 gap-4">
         <div className="max-w-3xl w-full bg-white shadow-md rounded-lg p-6">
+
+          <img className="object-cover w-full h-64 rounded-lg mb-4" src={lecture.imageUrl || defaultCoverUrl} alt="Imagem de capa da palestra"/>
+      
           <h1 className="text-3xl font-bold mb-4">{lecture?.title}</h1>
+     
           
           {renderIfNotEmpty(lecture?.lecturer, () => (
             <p className="text-lg text-gray-700 mb-2"><strong>Palestrante:</strong> {lecture?.lecturer}</p>
@@ -228,7 +236,7 @@ function LectureDetails () {
             </div>
 
             <div>
-              {lecture?.status === "Completada" || lecture?.status === "Cancelada" ? null : (
+              {lecture?.status === "Finalizada" || lecture?.status === "Cancelada" ? null : (
                 isParticipating ? (
                   <button
                     onClick={handleUnparticipate}
@@ -255,6 +263,10 @@ function LectureDetails () {
           )}
 
         </div>
+       
+      </div>
+
+      <section className="flex-grow flex items-center justify-center p-6 gap-4">
         {user?.email === lecture?.organizer.email &&(
           <>
             <div className="max-w-3xl w-full bg-white shadow-md rounded-lg p-6">
@@ -262,7 +274,7 @@ function LectureDetails () {
             </div>
           </>
         )}
-      </div>
+      </section>
       <Footer />
       <ErrorNotification error={errorMessage} />
       <SuccessNotification message={successMessage} />

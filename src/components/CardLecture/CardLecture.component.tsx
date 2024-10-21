@@ -34,12 +34,12 @@ const CardLecture = ({ lecture, onClick }: CardLectureProps) => {
     setIsTooltipVisible(false);
   };
 
-  console.log(lecture.imageUrl);
+  const defaultCoverUrl = "/images/heroBanner.png";
 
   return (
     <div className="flex flex-col w-80 h-[450px] rounded-xl bg-white text-gray-700 shadow-xl">
       <div className="relative flex-shrink-0 h-44 rounded-t-xl bg-blue-gray-500 bg-gradient-to-r from-[#861efd] to-[#2a27d6] overflow-hidden">
-        <img className="object-cover w-full h-full" src={lecture.imageUrl} />
+        <img className="object-cover w-full h-full" src={lecture.imageUrl || defaultCoverUrl} alt="Imagem de capa da palestra"/>
       </div>
       <div className="flex-1 p-6 space-y-2">
         <h5 className="mb-2 text-2xl font-extrabold text-blue-gray-900">
