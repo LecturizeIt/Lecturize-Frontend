@@ -1,0 +1,14 @@
+.card {
+    background: white; 
+    border: 1px solid rgb(87, 85, 85); 
+    border-radius: 10px;
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+.card-border {
+  border: 3px solid transparent; 
+  border-radius: 10px;
+  background: 
+    linear-gradient(to right, #ffffff 0%, #ffffff 50%, #ffffff 100%) padding-box,
+    linear-gradient(to right, #861efd 45%, #2a27d6 55%) border-box; 
+}

@@ -128,7 +128,6 @@ function LectureDetails () {
 
   if (!lecture) return <p>Detalhes da palestra não encontrados.</p>;
 
-  const defaultCoverUrl = "/images/heroBanner.png";
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
@@ -136,7 +135,7 @@ function LectureDetails () {
       <div className="flex-grow flex items-center justify-center p-6 gap-4">
         <div className="max-w-3xl w-full bg-white shadow-md rounded-lg p-6">
 
-          <img className="object-cover w-full h-64 rounded-lg mb-4" src={lecture.imageUrl || defaultCoverUrl} alt="Imagem de capa da palestra"/>
+          <img className="object-cover w-full h-64 rounded-lg mb-4" src={lecture.imageUrl} alt="Imagem de capa da palestra"/>
       
           <h1 className="text-3xl font-bold mb-4">{lecture?.title}</h1>
      

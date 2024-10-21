@@ -19,12 +19,25 @@ const getImageUrl = (id: number) => {
   return `https://lecturizeit.westus2.cloudapp.azure.com/api/lectures/${id}/image`;
 };
 
+const imageExists = (url: string): Promise<boolean> => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.src = url;
+    img.onload = () => resolve(true); 
+    img.onerror = () => resolve(false); 
+  });
+};
+
 export const fetchLectureByIdWithImage = async () => {
   const lectures = await fetchLectures();
   const lecturesWithImages = await Promise.all(
     lectures.map(async (lecture) => {
       if (lecture.id !== undefined) {
-        const imageUrl = getImageUrl(lecture.id);
+        let imageUrl: string = getImageUrl(lecture.id);
+        const isExists = await imageExists(imageUrl);
+        if (!isExists) {
+          imageUrl = "/images/heroBanner.png"; 
+        }
         return { ...lecture, imageUrl };
       }
       return lecture; 
