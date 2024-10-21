@@ -11,7 +11,11 @@ export const fetchLectures = async (): Promise<ILectureModel[]> => {
 
 export const fetchLectureById = async (id: string): Promise<ILectureDetail> => {
   const { data } = await api.get<ILectureDetail>(`/api/lectures/${id}`);
-  const imageUrl = getImageUrl(Number(id));
+  let imageUrl: string = getImageUrl(Number(id));
+  const isExists = await imageExists(imageUrl);
+  if (!isExists) {
+    imageUrl = "/images/heroBanner.png"; 
+  }
   return { ...data, imageUrl };
 };
 
@@ -61,7 +65,11 @@ export const fetchLectureByUser = async (email: string): Promise<ILectureModel[]
   const lecturesWithImages = await Promise.all(
     data.map(async (data) => {
       if(data.id !== undefined) {
-        const imageUrl = getImageUrl(data.id);
+        let imageUrl: string = getImageUrl(data.id);
+        const isExists = await imageExists(imageUrl);
+        if (!isExists) {
+          imageUrl = "/images/heroBanner.png"; 
+        }
         return { ...data, imageUrl };
       }
       return data;
