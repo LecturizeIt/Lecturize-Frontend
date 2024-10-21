@@ -3,7 +3,6 @@ import { getAccessToken } from "../utils/storage.utils";
 import { IUser } from "../domain/models/user.model";
 import { ITag } from "../domain/models/tag.model";
 import { api } from "./api";
-import axios from "axios";
 
 export const fetchLectures = async (): Promise<ILectureModel[]> => {
   const { data } = await api.get<ILectureModel[]>("/api/lectures");
@@ -96,8 +95,8 @@ export const createLecture = async (
 
     console.log("Data being sent:", { ...lectureData, tags });
 
-    const response = await axios.post(
-      "http://localhost:8080/api/lectures",
+    const response = await api.post(
+      "/api/lectures",
       { ...lectureData, tags },
       {
         headers: {

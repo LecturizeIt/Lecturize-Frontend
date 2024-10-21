@@ -10,11 +10,11 @@ import { useAuth } from "../../context/AuthContext";
 import { Modal } from "../../ui/Modal/Modal.ui";
 import { useMemo, useState } from "react";
 import LectureFormUpdate from "../../components/LectureFormUpdate/LectureFormUpdate.component";
-import LectureParticipants from "../../components/LectureParticipants/LectureParticipants.component";
 import { SuccessNotification } from "../../ui/SucessNotification/SucessNotification.ui";
 import { ILectureDetail } from "../../domain/models/lecture.model";
-import { PencilSquareIcon, TrashIcon } from "@heroicons/react/16/solid";
 import LoadingSpinner from "../../ui/Loading/Loading.ui";
+import MectricsSection from "../../components/MetricsSection/MetricsSection.component";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/16/solid";
 
 function LectureDetails () {
   const { id } = useParams();
@@ -24,7 +24,6 @@ function LectureDetails () {
   const [isEditModalOpen, setEditModalOpen] = useState(false); 
   const [successMessage, setSuccessMessage] = useState<string | undefined>(undefined);
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
-
 
   const handleOpenEditModal = () => {
     setEditModalOpen(true); 
@@ -263,18 +262,12 @@ function LectureDetails () {
           )}
 
         </div>
-       
-      </div>
-
-      <section className="flex-grow flex items-center justify-center p-6 gap-4">
         {user?.email === lecture?.organizer.email &&(
           <>
-            <div className="max-w-3xl w-full bg-white shadow-md rounded-lg p-6">
-              <LectureParticipants lectureId={lecture.id} />
-            </div>
-          </>
+            <MectricsSection user={user} lecture={lecture}/>
+          </>       
         )}
-      </section>
+      </div>
       <Footer />
       <ErrorNotification error={errorMessage} />
       <SuccessNotification message={successMessage} />
