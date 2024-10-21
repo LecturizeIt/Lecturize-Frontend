@@ -12,7 +12,26 @@ export const fetchLectures = async (): Promise<ILectureModel[]> => {
 
 export const fetchLectureById = async (id: string): Promise<ILectureDetail> => {
   const { data } = await api.get<ILectureDetail>(`/api/lectures/${id}`);
-  return data;
+  const imageUrl = getImageUrl(Number(id));
+  return { ...data, imageUrl };
+};
+
+const getImageUrl = (id: number) => {
+  return `https://lecturizeit.westus2.cloudapp.azure.com/api/lectures/${id}/image`;
+};
+
+export const fetchLectureByIdWithImage = async () => {
+  const lectures = await fetchLectures();
+  const lecturesWithImages = await Promise.all(
+    lectures.map(async (lecture) => {
+      if (lecture.id !== undefined) {
+        const imageUrl = getImageUrl(lecture.id);
+        return { ...lecture, imageUrl };
+      }
+      return lecture; 
+    })
+  );
+  return lecturesWithImages;
 };
 
 export const fetchLectureParticipants = async (id: number): Promise<IUser[]> => {
@@ -27,7 +46,16 @@ export const fetchLectureByUser = async (email: string): Promise<ILectureModel[]
       user: email
     }
   });
-  return data;
+  const lecturesWithImages = await Promise.all(
+    data.map(async (data) => {
+      if(data.id !== undefined) {
+        const imageUrl = getImageUrl(data.id);
+        return { ...data, imageUrl };
+      }
+      return data;
+    })
+  );
+  return lecturesWithImages;
 };
 
 export const participateInLecture = async (id: string): Promise<void> => {
@@ -69,7 +97,7 @@ export const createLecture = async (
     console.log("Data being sent:", { ...lectureData, tags });
 
     const response = await axios.post(
-      "https://lecturizeit.westus2.cloudapp.azure.com/api/lectures",
+      "http://localhost:8080/api/lectures",
       { ...lectureData, tags },
       {
         headers: {
@@ -98,4 +126,23 @@ export const updateLecture = async (id: string, lectureData: Partial<ILectureDet
   return api.put(`/api/lectures/${id}`, lectureData, {
     headers: { Authorization: `Bearer ${token}` }, 
   });
+};
+
+export const uploadImage = async (id: string, imageFile: File, description: string) => {
+  const token = getAccessToken();
+
+  const formData = new FormData(); 
+  formData.append("file", imageFile); 
+  formData.append("description", description);
+
+  try{
+    const response = await api.put(`/api/lectures/${id}/image`, formData, {
+      headers: { 
+        Authorization: `Bearer ${token}`, 
+      },
+    });
+    return response.data;
+  }catch (error) {
+    console.log("error", error);
+  }
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { FacebookShareButton, WhatsappShareButton, LinkedinShareButton, FacebookIcon, WhatsappIcon, LinkedinIcon } from "react-share";
+import { FacebookShareButton, WhatsappShareButton, LinkedinShareButton, FacebookIcon, WhatsappIcon, LinkedinIcon, TwitterShareButton, XIcon } from "react-share";
 import { ILectureModel } from "../../domain/models/lecture.model";
 
 type ShareTooltipProps = {
@@ -19,6 +19,9 @@ const ShareTooltip: React.FC<ShareTooltipProps> = ({ url, lecture }) => {
       <LinkedinShareButton url={url} title={lecture.title} summary={lecture.description} aria-label="Compartilhar no LinkedIn">
         <LinkedinIcon className="w-8 h-8 rounded-lg"/>
       </LinkedinShareButton>
+      < TwitterShareButton url={url} title={lecture.title} >
+        <XIcon className="w-8 h-8 rounded-lg"/>
+      </TwitterShareButton>
     </div>
   );
 };

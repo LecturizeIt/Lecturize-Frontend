@@ -4,12 +4,13 @@ import ListCards from "../../components/ListCard/ListCard.component";
 import Navbar from "../../components/Navbar/Navbar.component";
 import { useLectures } from "../../hooks/useLectures";
 import { ErrorNotification } from "../../ui/ErrorNotification/ErrorNotification.ui";
+import LoadingSpinner from "../../ui/Loading/Loading.ui";
 
 function Lectures () {
   const { data: lectures, isLoading, isError } = useLectures();
   const navigate = useNavigate();
 
-  if (isLoading) return <p className="text-center text-gray-500">Loading...</p>;
+  if (isLoading) return <LoadingSpinner />;
   if (isError) return <ErrorNotification error="Erro ao carregar palestras" />;
 
   const handleLectureClick = (id: number) => {

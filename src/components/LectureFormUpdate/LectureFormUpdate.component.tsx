@@ -1,8 +1,8 @@
 import { AxiosError } from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../../ui/Input/Input.ui";
 import Button from "../../ui/Button/Button.ui";
-import { updateLecture } from "../../api/lecture";
+import { updateLecture, uploadImage } from "../../api/lecture";
 import { Type } from "../../domain/enums/type.enums";
 import { convertToISO8601WithUTC } from "../../utils/lib/convertToISO8601WithUTC.utils";
 import { fetchTags } from "../../api/tags";
@@ -23,6 +23,9 @@ const LectureFormUpdate: React.FC<ILectureFormUpdateProps> = ({ lecture, onClose
   const [type, setType] = useState<Type>(lecture.type as Type);
   const [availableTags, setAvailableTags] = useState<{ id: number; name: string }[]>([]);
   const [error, setError] = useState<string | undefined>(undefined);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageDescription, setImageDescription] = useState<string>("");
+
 
   const [formData, setFormData] = useState({
     title: lecture.title || "",
@@ -75,6 +78,13 @@ const LectureFormUpdate: React.FC<ILectureFormUpdateProps> = ({ lecture, onClose
     setFormData(prevData => ({ ...prevData, [name]: value }));
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      setImageFile(files[0]);
+    }
+  };
+
   const handleTypeChange = (selectedType: Type) => {
     setType(selectedType);
     setFormData(prevData => ({ ...prevData, type: selectedType }));
@@ -118,6 +128,11 @@ const LectureFormUpdate: React.FC<ILectureFormUpdateProps> = ({ lecture, onClose
 
     try {
       await updateLecture(lecture.id.toString(), lectureData as ILectureDetail);
+
+      if (imageFile) {
+        await uploadImage(lecture.id.toString(), imageFile, imageDescription); 
+      }
+
       onClose();
       navigate(0);
     } catch (error) {
@@ -128,6 +143,7 @@ const LectureFormUpdate: React.FC<ILectureFormUpdateProps> = ({ lecture, onClose
       }
     }
   };
+
 
   return (
     <>
@@ -164,23 +180,29 @@ const LectureFormUpdate: React.FC<ILectureFormUpdateProps> = ({ lecture, onClose
         </div>
 
         <div className="flex space-x-4">
-          <Input
-            type="datetime-local"
-            name="startsAt"
-            value={formData.startsAt}
-            onChange={handleInputChange}
-            placeholder="Início"
-            width="50%"
-          />
-          <Input
-            type="datetime-local"
-            name="endsAt"
-            value={formData.endsAt}
-            onChange={handleInputChange}
-            placeholder="Fim"
-            width="50%"
-          />
+          <div className="flex flex-col w-1/2">
+            <p>Horário e data de início:</p>
+            <Input
+              type="datetime-local"
+              name="startsAt"
+              value={formData.startsAt}
+              onChange={handleInputChange}
+              placeholder="Início"
+            />
+          </div>
+  
+          <div className="flex flex-col w-1/2">
+            <p>Horário e data de término:</p>
+            <Input
+              type="datetime-local"
+              name="endsAt"
+              value={formData.endsAt}
+              onChange={handleInputChange}
+              placeholder="Fim"
+            />
+          </div>
         </div>
+  
 
         <div className="flex space-x-4 justify-center">
           <div
@@ -265,6 +287,28 @@ const LectureFormUpdate: React.FC<ILectureFormUpdateProps> = ({ lecture, onClose
             </>
           )}
         </div>
+
+        <div className="flex flex-col">
+          <label htmlFor="fileInput" className="mb-2">
+              Escolha uma Imagem de capa para Palestra:
+          </label>
+          <input
+            id="fileInput"
+            type="file"
+            name="file"
+            onChange={handleFileChange}
+            className="border border-gray-300 rounded-md p-2"
+          />
+        </div>
+
+        <Input
+          type="text"
+          name="description"
+          value={imageDescription}
+          onChange={(e) => setImageDescription(e.target.value)}
+          placeholder="Descrição da Imagem"
+          width="100%"
+        />
 
         <div className="flex flex-col">
           <div className="flex flex-wrap gap-2">

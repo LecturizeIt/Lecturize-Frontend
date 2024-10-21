@@ -6,12 +6,13 @@ import { useLectures } from "../hooks/useLectures";
 import { useNavigate } from "react-router-dom";
 import ListCards from "../components/ListCard/ListCard.component";
 import { ErrorNotification } from "../ui/ErrorNotification/ErrorNotification.ui";
+import LoadingSpinner from "../ui/Loading/Loading.ui";
 
 function App () {
   const { data: lectures, isLoading, isError } = useLectures();
   const navigate = useNavigate();
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <LoadingSpinner />;
   if (isError) return <ErrorNotification error="Erro ao carregar palestras" />;
 
   const handleLectureClick = (id: number) => {
@@ -26,7 +27,7 @@ function App () {
         <HeroSection />
         <BenefitsSection />
 
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center mb-6">
           <h2 className="text-2xl font-bold mb-4">Nossas Palestras</h2>
           <p className="text-lg text-gray-600 text-center mb-8">
             Explore as palestras que oferecemos e descubra temas interessantes para expandir seus conhecimentos. Clique em uma palestra para saber mais.
