@@ -10,7 +10,7 @@ interface IListCardsProps {
 
 const ListCards: React.FC<IListCardsProps> = ({ lectures, onCardClick }) => {
   return (
-    <div className="flex flex-wrap justify-center gap-4 mt-10">
+    <div className="flex flex-wrap justify-center gap-[5rem] mt-10">
       {lectures.map(lecture => (
         <div className="flex flex-wrap justify-center gap-4 mt-10" key={lecture.id}>
           <CardLecture 

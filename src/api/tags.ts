@@ -1,10 +1,10 @@
-import axios from "axios";
+import { ITag } from "../domain/models/tag.model";
+import { api } from "./api";
 
-const API_URL = import.meta.env.VITE_BASE_API_URL; 
 
-export const fetchTags = async (): Promise<{ id: number; name: string }[]> => {
+export const fetchTags = async (): Promise<ITag[]> => {
   try {
-    const { data } = await axios.get<{ id: number; name: string }[]>(`${API_URL}/api/tags`);
+    const { data } = await api.get<ITag[]>("/api/tags");
 
     return data;
   } catch (error) {

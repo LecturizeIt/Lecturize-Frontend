@@ -51,7 +51,11 @@ export function Modal ({ children, onClose }: ModalProps): JSX.Element | null {
 
       <div
         ref={wrapper}
-        className={`relative w-[100%] h-[100%] md:max-h-[80svh] sm:max-w-[600px] md:max-w-[900px] rounded-none md:rounded-lg md:p-5 bg-white flex items-center justify-center overflow-auto transform transition-transform duration-500 ${isVisible ? "scale-100" : "scale-95"}`}
+        className={`relative bg-white flex items-center justify-center overflow-hidden transform transition-transform duration-500 ${isVisible ? "scale-100" : "scale-95"} rounded-none md:rounded-lg`}
+        style={{
+          maxWidth: "90%", 
+          maxHeight: "90vh",
+        }}
       >
         <button
           className="z-10 absolute top-4 right-4 border-2 border-black/35 bg-white rounded-full p-2 hover:bg-opacity-100 transition"
@@ -69,7 +73,14 @@ export function Modal ({ children, onClose }: ModalProps): JSX.Element | null {
           </svg>
         </button>
 
-        {children}
+        <div
+          className="p-5 overflow-auto w-full h-full"
+          style={{
+            maxHeight: "80vh", 
+          }}
+        >
+          {children}
+        </div>
       </div>
     </div>
   );

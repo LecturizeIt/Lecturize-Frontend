@@ -1,35 +1,102 @@
-import axios from "axios";
-import { ILectureModel } from "../domain/models/lecture.model";
-import { ILectureDetail } from "../domain/models/lectureDetail.model";
+import { ILectureModel, ILectureDetail } from "../domain/models/lecture.model";
 import { getAccessToken } from "../utils/storage.utils";
-
-const API_URL = import.meta.env.VITE_BASE_API_URL;
+import { IUser } from "../domain/models/user.model";
+import { ITag } from "../domain/models/tag.model";
+import { api } from "./api";
 
 export const fetchLectures = async (): Promise<ILectureModel[]> => {
-  const { data } = await axios.get<ILectureModel[]>(`${API_URL}/api/lectures`);
+  const { data } = await api.get<ILectureModel[]>("/api/lectures");
   return data;
 };
 
 export const fetchLectureById = async (id: string): Promise<ILectureDetail> => {
-  const API_URL = import.meta.env.VITE_BASE_API_URL;
-  const { data } = await axios.get<ILectureDetail>(
-    `${API_URL}/api/lectures/${id}`
-  );
+  const { data } = await api.get<ILectureDetail>(`/api/lectures/${id}`);
+  const imageUrl: string = getImageUrl(Number(id));
+  return { ...data, imageUrl };
+};
 
+const getImageUrl = (id: number) => {
+  return `https://lecturizeit.westus2.cloudapp.azure.com/api/lectures/${id}/image`;
+};
+
+export const fetchLectureByIdWithImage = async () => {
+  const lectures = await fetchLectures();
+  const lecturesWithImages = await Promise.all(
+    lectures.map(async (lecture) => {
+      if (lecture.id !== undefined) {
+        const imageUrl: string = getImageUrl(lecture.id);
+        return { ...lecture, imageUrl };
+      }
+      return lecture; 
+    })
+  );
+  return lecturesWithImages;
+};
+
+export const fetchLectureParticipants = async (id: number): Promise<IUser[]> => {
+  const { data } = await api.get<IUser[]>(`/api/lectures/${id}/participants`);
+  
   return data;
 };
 
+export const fetchLectureByUser = async (email: string): Promise<ILectureModel[]> => {
+  const { data } = await api.get<ILectureModel[]>("/api/lectures", {
+    params: {
+      user: email
+    }
+  });
+  const lecturesWithImages = await Promise.all(
+    data.map(async (data) => {
+      if(data.id !== undefined) {
+        const imageUrl: string = getImageUrl(data.id);
+        return { ...data, imageUrl };
+      }
+      return data;
+    })
+  );
+  return lecturesWithImages;
+};
+
+export const participateInLecture = async (id: string): Promise<void> => {
+  const token = getAccessToken();
+
+  await api.put(`/api/lectures/${id}/participate`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
+export const unParticipateInLecture = async (id: string): Promise<void> => {
+  const token = getAccessToken();
+
+  await api.put(`/api/lectures/${id}/unparticipate`, 
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
+
 export const createLecture = async (
   lectureData: ILectureModel,
-  tagsId: number[]
+  tagsId: ITag[]
 ): Promise<{ id: number }> => {
   try {
     const token = getAccessToken();
 
-    const tags = tagsId.map((id) => ({ id }));
+    const tags = tagsId.map(tag => ({ id: tag.id }));
 
-    const response = await axios.post(
-      `${API_URL}/api/lectures`,
+    console.log("Data being sent:", { ...lectureData, tags });
+
+    const response = await api.post(
+      "/api/lectures",
       { ...lectureData, tags },
       {
         headers: {
@@ -44,4 +111,45 @@ export const createLecture = async (
     console.log("error", error);
     return { id: -1 };
   }
+};
+
+export const deleteLecture = async (id: string) => {
+  const token = getAccessToken();
+  return api.delete(`/api/lectures/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+
+export const updateLecture = async (id: string, lectureData: Partial<ILectureDetail>) => {
+  const token = getAccessToken();
+  return api.put(`/api/lectures/${id}`, lectureData, {
+    headers: { Authorization: `Bearer ${token}` }, 
+  });
+};
+
+export const uploadImage = async (id: string, imageFile: File, description: string) => {
+  const token = getAccessToken();
+
+  const formData = new FormData(); 
+  formData.append("file", imageFile); 
+  formData.append("description", description);
+
+  try{
+    const response = await api.put(`/api/lectures/${id}/image`, formData, {
+      headers: { 
+        Authorization: `Bearer ${token}`, 
+      },
+    });
+    return response.data;
+  }catch (error) {
+    console.log("error", error);
+  }
+};
+
+export const viewLecture = async (id: number) => {
+  return api.put(`/api/lectures/${id}/visit`);
+};
+
+export const shareLecture = async (id: number) => {
+  return api.put(`/api/lectures/${id}/share`);
 };

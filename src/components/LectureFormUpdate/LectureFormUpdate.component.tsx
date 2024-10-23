@@ -1,59 +1,96 @@
-import { useEffect, useState } from "react";
+import { AxiosError } from "axios";
+import React, { useEffect, useState } from "react";
 import Input from "../../ui/Input/Input.ui";
 import Button from "../../ui/Button/Button.ui";
-import { ILectureModel } from "../../domain/models/lecture.model";
-import { createLecture } from "../../api/lecture";
+import { updateLecture, uploadImage } from "../../api/lecture";
 import { Type } from "../../domain/enums/type.enums";
 import { convertToISO8601WithUTC } from "../../utils/lib/convertToISO8601WithUTC.utils";
 import { fetchTags } from "../../api/tags";
 import { ErrorNotification } from "../../ui/ErrorNotification/ErrorNotification.ui";
-
-import { AxiosError } from "axios";
+import { formatDateTimeForInput } from "../../utils/lib/date.utils";
 import { useNavigate } from "react-router-dom";
 import { ITag } from "../../domain/models/tag.model";
+import { ILectureDetail } from "../../domain/models/lecture.model";
 
-function LectureForm () {
-  const [type, setType] = useState<Type>(Type.HYBRID);
+interface ILectureFormUpdateProps {
+  lecture: ILectureDetail;
+  onClose: () => void;
+}
+
+const LectureFormUpdate: React.FC<ILectureFormUpdateProps> = ({ lecture, onClose }) => {
+  const navigate = useNavigate();
+
+  const [type, setType] = useState<Type>(lecture.type as Type);
   const [availableTags, setAvailableTags] = useState<{ id: number; name: string }[]>([]);
   const [error, setError] = useState<string | undefined>(undefined);
-  const navigate = useNavigate();
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageDescription, setImageDescription] = useState<string>("");
+
+
   const [formData, setFormData] = useState({
-    title: "",
-    lecturer: "",
-    description: "",
-    startsAt: "",
-    endsAt: "",
-    address: "",
-    url: "",
-    type: Type.ONLINE,
-    tags: [] as ITag[],
-    maximumCapacity: "",
+    title: lecture.title || "",
+    lecturer: lecture.lecturer || "",
+    description: lecture.description || "",
+    startsAt: formatDateTimeForInput(lecture.startsAt),
+    endsAt: formatDateTimeForInput(lecture.endsAt),
+    address: lecture.address || "",
+    url: lecture.url || "",
+    type: lecture.type as Type,
+    tags: lecture.tags,
+    maximumCapacity: lecture.maximumCapacity ? String(lecture.maximumCapacity) : "",
   });
 
   const MAX_TAGS = 5;
 
+  useEffect(() => {
+    const loadTags = async () => {
+      try {
+        const tags = await fetchTags();
+        setAvailableTags(tags);
+      } catch (error) {
+        console.error("Error fetching tags:", error);
+      }
+    };
+
+    loadTags();
+  }, []);
+
+  useEffect(() => {
+    
+    setFormData(prevData => ({ ...prevData, tags: [] }));
+
+    
+    switch (type) {
+    case Type.PRESENTIAL:
+      setFormData(prevData => ({ ...prevData, url: "", address: prevData.address, maximumCapacity: prevData.maximumCapacity }));
+      break;
+    case Type.ONLINE:
+      setFormData(prevData => ({ ...prevData, url: prevData.url, address: "", maximumCapacity: prevData.maximumCapacity }));
+      break;
+    case Type.HYBRID:
+      setFormData(prevData => ({ ...prevData, url: prevData.url, address: prevData.address, maximumCapacity: prevData.maximumCapacity }));
+      break;
+    }
+  }, [type]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData(prevData => ({ ...prevData, [name]: value }));
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      setImageFile(file);
+      setImageDescription(file.name);
+    }
   };
 
   const handleTypeChange = (selectedType: Type) => {
     setType(selectedType);
-    setFormData({ ...formData, type: selectedType });
+    setFormData(prevData => ({ ...prevData, type: selectedType }));
   };
-
-  const loadTags = async () => {
-    try {
-      const tags = await fetchTags();
-      setAvailableTags(tags);
-    } catch (error) {
-      console.error("Error fetching tags:", error);
-    }
-  };
-
-  useEffect(() => {
-    loadTags();
-  }, []);
 
   const handleTagClick = (tag: ITag) => {
     const { tags } = formData;
@@ -76,27 +113,40 @@ function LectureForm () {
     const startsAtIso = convertToISO8601WithUTC(formData.startsAt);
     const endsAtIso = convertToISO8601WithUTC(formData.endsAt);
 
-    const lectureData: ILectureModel = {
-      ...formData,
+    const lectureData: Partial<ILectureDetail> = {
+      title: formData.title,
+      lecturer: formData.lecturer,
+      description: formData.description,
       startsAt: startsAtIso,
       endsAt: endsAtIso,
       type: formData.type,
-      tags: formData.tags,
+      url: formData.url || undefined,
+      address: formData.address || undefined,
+      tags: formData.tags, 
       maximumCapacity: formData.maximumCapacity ? Number(formData.maximumCapacity) : undefined,
     };
 
+    console.log("Sending data:", lectureData);
+
     try {
-      const response = await createLecture(lectureData, formData.tags);
-      const createLectureId = response.id;
-      navigate(`/lectures/${createLectureId}`);
+      await updateLecture(lecture.id.toString(), lectureData as ILectureDetail);
+
+      if (imageFile) {
+        await uploadImage(lecture.id.toString(), imageFile, imageDescription); 
+      }
+
+      onClose();
+      navigate(0);
     } catch (error) {
       if (error instanceof AxiosError) {
-        setError(`Erro ao criar a palestra: ${error.response?.data?.message || error.message}`);
+        setError(`Erro ao atualizar a palestra: ${error.response?.data?.message || error.message}`);
       } else {
         setError(`Erro desconhecido: ${error}`);
       }
     }
   };
+
+
   return (
     <>
       <ErrorNotification error={error} />
@@ -119,7 +169,7 @@ function LectureForm () {
             width="50%"
           />
         </div>
-  
+
         <div className="flex flex-col">
           <textarea
             name="description"
@@ -130,7 +180,7 @@ function LectureForm () {
             rows={4}
           />
         </div>
-  
+
         <div className="flex space-x-4">
           <div className="flex flex-col w-1/2">
             <p>Horário e data de início:</p>
@@ -155,35 +205,30 @@ function LectureForm () {
           </div>
         </div>
   
+
         <div className="flex space-x-4 justify-center">
           <div
-            className={`p-4 border rounded-md cursor-pointer flex-1 text-center ${
-              type === "HYBRID" ? "border-purple-500 bg-purple-100" : "border-gray-300"
-            }`}
+            className={`p-4 border rounded-md cursor-pointer flex-1 text-center ${type === Type.HYBRID ? "border-purple-500 bg-purple-100" : "border-gray-300"}`}
             onClick={() => handleTypeChange(Type.HYBRID)}
           >
             Híbrido
           </div>
           <div
-            className={`p-4 border rounded-md cursor-pointer flex-1 text-center ${
-              type === "ONLINE" ? "border-purple-500 bg-purple-100" : "border-gray-300"
-            }`}
+            className={`p-4 border rounded-md cursor-pointer flex-1 text-center ${type === Type.ONLINE ? "border-purple-500 bg-purple-100" : "border-gray-300"}`}
             onClick={() => handleTypeChange(Type.ONLINE)}
           >
             Online
           </div>
           <div
-            className={`p-4 border rounded-md cursor-pointer flex-1 text-center ${
-              type === "PRESENTIAL" ? "border-purple-500 bg-purple-100" : "border-gray-300"
-            }`}
+            className={`p-4 border rounded-md cursor-pointer flex-1 text-center ${type === Type.PRESENTIAL ? "border-purple-500 bg-purple-100" : "border-gray-300"}`}
             onClick={() => handleTypeChange(Type.PRESENTIAL)}
           >
             Presencial
           </div>
         </div>
-  
+
         <div className="flex flex-col space-y-4">
-          {type === "HYBRID" && (
+          {type === Type.HYBRID && (
             <>
               <Input
                 type="text"
@@ -211,8 +256,8 @@ function LectureForm () {
               />
             </>
           )}
-  
-          {type === "ONLINE" && (
+
+          {type === Type.ONLINE && (
             <Input
               type="text"
               name="url"
@@ -222,8 +267,8 @@ function LectureForm () {
               width="100%"
             />
           )}
-  
-          {type === "PRESENTIAL" && (
+
+          {type === Type.PRESENTIAL && (
             <>
               <Input
                 type="text"
@@ -243,31 +288,41 @@ function LectureForm () {
               />
             </>
           )}
-  
         </div>
-  
-        <div className="text-end mt-2">
-          {formData.tags.length}/{MAX_TAGS}
+
+        <div className="flex flex-col">
+          <label htmlFor="fileInput" className="mb-2">
+              Escolha uma Imagem de capa para Palestra:
+          </label>
+          <input
+            id="fileInput"
+            type="file"
+            name="file"
+            onChange={handleFileChange}
+            className="border border-gray-300 rounded-md p-2"
+          />
         </div>
-  
-        <div className="flex flex-wrap gap-2">
-          {availableTags.map((tag) => (
-            <div
-              key={tag.id}
-              className={`px-3 py-1 border rounded-full cursor-pointer ${
-                formData.tags.some(t => t.id === tag.id) ? "bg-gradient-to-br from-[#861efd] to-[#2a27d6] text-white" : "bg-gray-200"
-              }`}
-              onClick={() => handleTagClick(tag)}
-            >
-              {tag.name}
-            </div>
-          ))}
+
+        <div className="flex flex-col">
+          <div className="flex flex-wrap gap-2">
+            {availableTags.map((tag) => (
+              <div
+                key={tag.id}
+                className={`px-3 py-1 border rounded-full cursor-pointer ${
+                  formData.tags.some(t => t.id === tag.id) ? "bg-gradient-to-br from-[#861efd] to-[#2a27d6] text-white" : "bg-gray-200"
+                }`}
+                onClick={() => handleTagClick(tag)}
+              >
+                {tag.name}
+              </div>
+            ))}
+          </div>
         </div>
-  
-        <Button type="submit" className="w-[80%] mx-auto" text="Criar Palestra" />
+
+        <Button type="submit" className="w-[80%] mx-auto" text="Salvar Atualizações"/>
       </form>
     </>
   );
-}
+};
 
-export default LectureForm;
+export default LectureFormUpdate;
