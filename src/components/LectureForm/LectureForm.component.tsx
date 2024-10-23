@@ -264,7 +264,7 @@ function LectureForm () {
           ))}
         </div>
   
-        <Button type="submit" text="Criar Palestra" />
+        <Button type="submit" className="w-[80%] mx-auto" text="Criar Palestra" />
       </form>
     </>
   );

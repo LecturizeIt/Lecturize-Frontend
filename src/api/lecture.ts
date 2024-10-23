@@ -3,7 +3,6 @@ import { getAccessToken } from "../utils/storage.utils";
 import { IUser } from "../domain/models/user.model";
 import { ITag } from "../domain/models/tag.model";
 import { api } from "./api";
-import axios from "axios";
 
 export const fetchLectures = async (): Promise<ILectureModel[]> => {
   const { data } = await api.get<ILectureModel[]>("/api/lectures");
@@ -12,7 +11,7 @@ export const fetchLectures = async (): Promise<ILectureModel[]> => {
 
 export const fetchLectureById = async (id: string): Promise<ILectureDetail> => {
   const { data } = await api.get<ILectureDetail>(`/api/lectures/${id}`);
-  const imageUrl = getImageUrl(Number(id));
+  const imageUrl: string = getImageUrl(Number(id));
   return { ...data, imageUrl };
 };
 
@@ -25,7 +24,7 @@ export const fetchLectureByIdWithImage = async () => {
   const lecturesWithImages = await Promise.all(
     lectures.map(async (lecture) => {
       if (lecture.id !== undefined) {
-        const imageUrl = getImageUrl(lecture.id);
+        const imageUrl: string = getImageUrl(lecture.id);
         return { ...lecture, imageUrl };
       }
       return lecture; 
@@ -49,7 +48,7 @@ export const fetchLectureByUser = async (email: string): Promise<ILectureModel[]
   const lecturesWithImages = await Promise.all(
     data.map(async (data) => {
       if(data.id !== undefined) {
-        const imageUrl = getImageUrl(data.id);
+        const imageUrl: string = getImageUrl(data.id);
         return { ...data, imageUrl };
       }
       return data;
@@ -96,8 +95,8 @@ export const createLecture = async (
 
     console.log("Data being sent:", { ...lectureData, tags });
 
-    const response = await axios.post(
-      "http://localhost:8080/api/lectures",
+    const response = await api.post(
+      "/api/lectures",
       { ...lectureData, tags },
       {
         headers: {
@@ -145,4 +144,12 @@ export const uploadImage = async (id: string, imageFile: File, description: stri
   }catch (error) {
     console.log("error", error);
   }
+};
+
+export const viewLecture = async (id: number) => {
+  return api.put(`/api/lectures/${id}/visit`);
+};
+
+export const shareLecture = async (id: number) => {
+  return api.put(`/api/lectures/${id}/share`);
 };

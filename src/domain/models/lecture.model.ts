@@ -1,5 +1,6 @@
 
 import { Type } from "../enums/type.enums";
+import { IMetric } from "./metric.model";
 import { ITag } from "./tag.model";
 import { IUser } from "./user.model";
 
@@ -16,7 +17,7 @@ export interface ILectureModel {
   url?: string | null;
   address?: string | null;
   maximumCapacity?: number;
-  imageUrl?: string ;
+  imageUrl?: string;
 }
 
 export interface ILectureDetail extends ILectureModel {
@@ -24,4 +25,5 @@ export interface ILectureDetail extends ILectureModel {
   createdAt: string;
   status: string;
   organizer: IUser;
+  metrics: IMetric;
 }
