@@ -11,11 +11,7 @@ export const fetchLectures = async (): Promise<ILectureModel[]> => {
 
 export const fetchLectureById = async (id: string): Promise<ILectureDetail> => {
   const { data } = await api.get<ILectureDetail>(`/api/lectures/${id}`);
-  let imageUrl: string = getImageUrl(Number(id));
-  const isExists = await imageExists(imageUrl);
-  if (!isExists) {
-    imageUrl = "/images/heroBanner.png"; 
-  }
+  const imageUrl: string = getImageUrl(Number(id));
   return { ...data, imageUrl };
 };
 
@@ -23,25 +19,12 @@ const getImageUrl = (id: number) => {
   return `https://lecturizeit.westus2.cloudapp.azure.com/api/lectures/${id}/image`;
 };
 
-const imageExists = (url: string): Promise<boolean> => {
-  return new Promise((resolve) => {
-    const img = new Image();
-    img.src = url;
-    img.onload = () => resolve(true); 
-    img.onerror = () => resolve(false); 
-  });
-};
-
 export const fetchLectureByIdWithImage = async () => {
   const lectures = await fetchLectures();
   const lecturesWithImages = await Promise.all(
     lectures.map(async (lecture) => {
       if (lecture.id !== undefined) {
-        let imageUrl: string = getImageUrl(lecture.id);
-        const isExists = await imageExists(imageUrl);
-        if (!isExists) {
-          imageUrl = "/images/heroBanner.png"; 
-        }
+        const imageUrl: string = getImageUrl(lecture.id);
         return { ...lecture, imageUrl };
       }
       return lecture; 
@@ -65,11 +48,7 @@ export const fetchLectureByUser = async (email: string): Promise<ILectureModel[]
   const lecturesWithImages = await Promise.all(
     data.map(async (data) => {
       if(data.id !== undefined) {
-        let imageUrl: string = getImageUrl(data.id);
-        const isExists = await imageExists(imageUrl);
-        if (!isExists) {
-          imageUrl = "/images/heroBanner.png"; 
-        }
+        const imageUrl: string = getImageUrl(data.id);
         return { ...data, imageUrl };
       }
       return data;
@@ -165,4 +144,12 @@ export const uploadImage = async (id: string, imageFile: File, description: stri
   }catch (error) {
     console.log("error", error);
   }
+};
+
+export const viewLecture = async (id: number) => {
+  return api.put(`/api/lectures/${id}/visit`);
+};
+
+export const shareLecture = async (id: number) => {
+  return api.put(`/api/lectures/${id}/share`);
 };

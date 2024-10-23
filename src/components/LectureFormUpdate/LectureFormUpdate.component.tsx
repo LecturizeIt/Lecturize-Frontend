@@ -81,7 +81,9 @@ const LectureFormUpdate: React.FC<ILectureFormUpdateProps> = ({ lecture, onClose
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      setImageFile(files[0]);
+      const file = files[0];
+      setImageFile(file);
+      setImageDescription(file.name);
     }
   };
 
@@ -301,15 +303,6 @@ const LectureFormUpdate: React.FC<ILectureFormUpdateProps> = ({ lecture, onClose
           />
         </div>
 
-        <Input
-          type="text"
-          name="description"
-          value={imageDescription}
-          onChange={(e) => setImageDescription(e.target.value)}
-          placeholder="Descrição da Imagem"
-          width="100%"
-        />
-
         <div className="flex flex-col">
           <div className="flex flex-wrap gap-2">
             {availableTags.map((tag) => (
@@ -326,7 +319,7 @@ const LectureFormUpdate: React.FC<ILectureFormUpdateProps> = ({ lecture, onClose
           </div>
         </div>
 
-        <Button type="submit" text="Salvar Atualizações"/>
+        <Button type="submit" className="w-[80%] mx-auto" text="Salvar Atualizações"/>
       </form>
     </>
   );

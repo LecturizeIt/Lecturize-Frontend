@@ -25,7 +25,7 @@ const MectricsSection: React.FC<MectricsSectionProps> = ({ user, lecture }) => {
   const participantCount = participants ? participants.length : 0;
 
   return (
-    <div className="w-[30%] mt-4 flex flex-col gap-5"> 
+    <div className="w-[60%] md:w-[30%] mt-4 flex flex-col gap-5"> 
       {user?.email === lecture?.organizer.email && (
         <>
           <h2 className="font-bold text-2xl">Métricas da Palestra</h2>
@@ -37,12 +37,12 @@ const MectricsSection: React.FC<MectricsSectionProps> = ({ user, lecture }) => {
           />
           <Metric 
             icon={<ShareIcon className="h-6 w-6 text-[#861efd]"/>} 
-            metric={participantCount}
+            metric={lecture.metrics.timesShared}
             text="Compartilhamentos em redes sociais" 
             className="h-[128px] w-full"
           /> <Metric 
             icon={<EyeIcon className="h-6 w-6 text-[#861efd]"/>} 
-            metric={participantCount}
+            metric={lecture.metrics.timesVisited}
             text="Visualizações" 
             className="h-[128px] w-full"
           />

@@ -40,7 +40,7 @@ const CardLecture = ({ lecture, onClick }: CardLectureProps) => {
   return (
     <div className={`${styles.card} ${styles["card-border"]} flex flex-col w-80 h-[450px] rounded-xl bg-white text-gray-700 shadow-xl` }>
       <div className="relative flex-shrink-0 h-44 rounded-t-lg overflow-hidden">
-        <img className="object-cover w-full h-full" src={lecture.imageUrl} alt="Imagem de capa da palestra"/>
+        <img className="object-cover w-full h-full" src={lecture.imageUrl} onError={(e) => e.currentTarget.src = "/images/heroBanner.png"} alt="Imagem de capa da palestra"/>
       </div>
       <div className="flex-1 p-6 space-y-2">
         <h5 className="mb-2 text-2xl font-extrabold text-blue-gray-900">
