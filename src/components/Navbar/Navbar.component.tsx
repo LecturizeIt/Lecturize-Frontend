@@ -57,7 +57,7 @@ const Navbar = () => {
             </Link>
           </>
         )}
-        {user && (
+        {/* {user && (
           <>
             <Link
               to="/dashboard"
@@ -66,7 +66,7 @@ const Navbar = () => {
               Dashboard
             </Link>
           </>
-        )}
+        )} */}
         <Button
           onClick={() => handleUserAction(user, navigate, logout, "logout")}
           text={user ? "Sair" : "Entrar"}
@@ -98,7 +98,7 @@ const Navbar = () => {
               </Link>
             </>
           )}
-          {user && (
+          {/* {user && (
             <>
               <Link
                 to="/dashboard"
@@ -108,7 +108,7 @@ const Navbar = () => {
                 Dashboard
               </Link>
             </>
-          )}
+          )} */}
           <Button
             onClick={() => {
               handleUserAction(user, navigate, logout, "logout");
