@@ -25,7 +25,7 @@ const MectricsSection: React.FC<MectricsSectionProps> = ({ user, lecture }) => {
   const participantCount = participants ? participants.length : 0;
 
   return (
-    <div className="w-[60%] md:w-[30%] mt-4 flex flex-col gap-5"> 
+    <div className="w-[100%] mt-4 flex flex-col gap-5"> 
       {user?.email === lecture?.organizer.email && (
         <>
           <h2 className="font-bold text-2xl">Métricas da Palestra</h2>

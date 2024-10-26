@@ -103,7 +103,7 @@ function LoginPage () {
           <h3 className="font-semibold">
             Não possui uma conta?{" "}
             <span className="text-[#861efd] hover:underline">
-              <a href="/Register">Inscreva-se gratuitamente!</a>
+              <a href="/register">Inscreva-se gratuitamente!</a>
             </span>
           </h3>
         </div>
