@@ -180,7 +180,7 @@ function LectureDetails () {
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <Navbar />
-      <div className="flex-grow flex items-center justify-center p-6 gap-4">
+      <div className="flex-grow flex items-center justify-center p-6 gap-4 mt-14">
         <div className="max-w-6xl w-full bg-white shadow-md rounded-lg p-6">
           <div className="flex flex-col md:grid md:grid-cols-2 md:gap-6">
             <div className="md:mb-0">

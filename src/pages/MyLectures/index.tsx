@@ -33,12 +33,12 @@ function MyLectures () {
       <Navbar />
 
       {!user && (
-        <div className="flex justify-center mt-4">
+        <div className="flex justify-center mt-14">
           <h3 className="text-lg">Entre ou cadastre-se para criar uma palestra</h3>
         </div>
       )}
 
-      <div className="flex flex-col items-center flex-grow mt-8 relative">
+      <div className="flex flex-col items-center flex-grow mt-28 relative">
         {user && (
           <div className="h-[30px] w-full flex items-start justify-start">
             <Button onClick={openModal} text="Criar Palestra" className="mt-2 ml-4" />
