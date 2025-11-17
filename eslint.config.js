@@ -13,7 +13,7 @@ export default tseslint.config({
     globals: globals.browser,
     parserOptions: {
       project: './tsconfig.app.json',
-      tsconfigRootDir: './', // Ajuste o caminho conforme necessário
+      tsconfigRootDir: __dirname
     },
   },
   plugins: {
