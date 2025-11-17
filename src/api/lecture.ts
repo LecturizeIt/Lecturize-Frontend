@@ -5,8 +5,8 @@ import { ITag } from "../domain/models/tag.model";
 import { api } from "./api";
 
 export const fetchLectures = async (): Promise<ILectureModel[]> => {
-  const { data } = await api.get<ILectureModel[]>("/api/lectures");
-  return data;
+  const { data } = await api.get("/api/lectures");
+  return data.results; 
 };
 
 export const fetchLectureById = async (id: string): Promise<ILectureDetail> => {
@@ -16,7 +16,7 @@ export const fetchLectureById = async (id: string): Promise<ILectureDetail> => {
 };
 
 const getImageUrl = (id: number) => {
-  return `https://lecturizeit.westus2.cloudapp.azure.com/api/lectures/${id}/image`;
+  return `https://fatec.miralhas.com/api/lectures/${id}/image`;
 };
 
 export const fetchLectureByIdWithImage = async () => {
@@ -40,18 +40,25 @@ export const fetchLectureParticipants = async (id: number): Promise<IUser[]> => 
 };
 
 export const fetchLectureByUser = async (email: string): Promise<ILectureModel[]> => {
-  const { data } = await api.get<ILectureModel[]>("/api/lectures", {
+  const token = getAccessToken();
+
+  const { data } = await api.get("/api/lectures", {
     params: {
-      user: email
-    }
+      user: email,
+    },
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
+  const lecturesArray = data.results;
+
   const lecturesWithImages = await Promise.all(
-    data.map(async (data) => {
-      if(data.id !== undefined) {
-        const imageUrl: string = getImageUrl(data.id);
-        return { ...data, imageUrl };
+    lecturesArray.map(async (lectureData: ILectureModel) => { 
+      if (lectureData.id !== undefined) {
+        const imageUrl: string = getImageUrl(lectureData.id);
+        return { ...lectureData, imageUrl };
       }
-      return data;
+      return lectureData;
     })
   );
   return lecturesWithImages;
