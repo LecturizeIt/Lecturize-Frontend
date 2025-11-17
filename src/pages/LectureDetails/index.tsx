@@ -27,6 +27,7 @@ import {
   TrashIcon,
 } from "@heroicons/react/16/solid";
 import ConfirmationDialog from "../../ui/ConfirmationDialog/ConfirmationDialog.ui";
+import { Helmet } from "react-helmet-async";
 
 function LectureDetails () {
   const { id } = useParams();
@@ -179,6 +180,23 @@ function LectureDetails () {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
+      <Helmet>
+        {/* Tags de Título e Descrição (para o Google) */}
+        <title>Lecturize It {lecture.title}</title>
+        <meta name="description" content={lecture.description} />
+        
+        {/* Tags Open Graph (OG) (para Facebook, WhatsApp, etc) */}
+        <meta property="og:title" content={lecture.title} />
+        <meta property="og:description" content={lecture.description} />
+        <meta property="og:type" content="article" /> 
+        <meta property="og:image" content={lecture.imageUrl} />
+        
+        {/* Tags do Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={lecture.title} />
+        <meta name="twitter:description" content={lecture.description} />
+        <meta name="twitter:image" content={lecture.imageUrl} />
+      </Helmet>
       <Navbar />
       <div className="flex-grow flex items-center justify-center p-6 gap-4 mt-14">
         <div className="max-w-6xl w-full bg-white shadow-md rounded-lg p-6">
