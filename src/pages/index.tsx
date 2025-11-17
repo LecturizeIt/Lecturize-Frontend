@@ -25,9 +25,12 @@ function App () {
       
       <main className="flex-grow flex flex-col items-center">
         <HeroSection />
-        <BenefitsSection />
+        <div className="mt-[-300px] h-[500px]">
+          <BenefitsSection />
+        </div>
+        
 
-        <div className="flex flex-col items-center justify-center mb-6">
+        <div className="flex flex-col items-center justify-center mb-6 mt-10">
           <h2 className="text-2xl font-bold mb-4">Nossas Palestras</h2>
           <p className="text-lg text-gray-600 text-center mb-8">
             Explore as palestras que oferecemos e descubra temas interessantes para expandir seus conhecimentos. Clique em uma palestra para saber mais.
